@@ -8,6 +8,8 @@ def index():
 	
 @party_Blueprint.route('/add_party',methods = ['POST'])
 def add_aparty():
+	"""Given that i am an admin i should be able to add a political party
+       When i visit .../api/v1/add_party endpoint using POST method"""
 	try:
 		if not request.get_json():
 			return make_response(jsonify({'status':401}),401)
