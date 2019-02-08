@@ -31,7 +31,8 @@ def add_office():
 		return make_response(jsonify({'message':'Bad request','status':400}),400)
 @office_Blueprint.route('/get_office/<int:office_id>',methods =['GET'])
 def get_office(office_id):
-	""""""
+	"""Given that i am an admin i should be able to get a specific l political office
+       When i append party_id to .../api/v1/get_office endpoint using GET method"""
 	if office_id:
 		for office_dict in offices:
 			for key in office_dict:
