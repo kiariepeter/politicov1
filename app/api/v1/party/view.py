@@ -31,6 +31,8 @@ def add_aparty():
 
 @party_Blueprint.route('/get_party/<int:party_id>',methods =['GET'])
 def get_party(party_id):
+	"""Given that i am an admin i should be able to get a list of all political parties
+	   When i visit .../api/v1/get_parties endpoint using GET method"""
 	if party_id:
 		for party_dict in parties:
 			for key in party_dict:
