@@ -10,7 +10,7 @@ Politicov1 involves endpoints to add,edit,delete and update political parties an
 
 3) Create a virtual environment: `virtualenv -p python3 env`
 
-4) Activate the virtual environment: `source env/bin/activate` on Linux/Mac  or `source venv/Scripts/activate` on windows.
+4) Activate the virtual environment: `source env/bin/activate` on Linux/Mac  or `source env/Scripts/activate` on windows.
 
 5) Install the requirements : `pip install -r requirements.txt`
 
