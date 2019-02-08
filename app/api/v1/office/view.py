@@ -48,6 +48,8 @@ def get_office(office_id):
 
 @office_Blueprint.route('/update_office/<int:office_id>',methods = ['PATCH'])
 def update_office(office_id):
+	"""Given that i am an admin i should be able to edit a specific political office
+	   When i visit to .../api/v1/edit_office endpoint using PUT method"""
 	if request.method =="PATCH":
 		if office_id:
 			if not request.get_json():
