@@ -65,6 +65,8 @@ def update_office(office_id):
 
 @office_Blueprint.route('/delete_office/<int:office_id>',methods = ['DELETE'])
 def delete_office(office_id):
+	"""Given that i am an admin i should be able to delete a specific political office
+       When i append party_id to .../api/v1/delete_office endpoint using DELETE method"""
 	if request.method == "DELETE":
 		if office_id:
 			data = [office for office in offices if office["office_id"] == office_id]
