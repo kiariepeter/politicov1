@@ -70,6 +70,8 @@ def update_party(party_id):
 
 @party_Blueprint.route('/delete_party/<int:party_id>',methods = ['DELETE'])
 def delete_party(party_id):
+	"""Given that i am an admin i should be able to delete a specific political party
+	   When i append party_id to .../api/v1/delete_party endpoint using DELETE method"""
 	if request.method == "DELETE":
 		if party_id:
 			data = [parties for party in parties if party["party_id"] == party_id]
