@@ -19,9 +19,7 @@ class Party(object):
 		parties.append(new_party)
 
 	def get_parties(self):
-		return self.parties
-	@staticmethod
-	def get_party(party_id):
+		"""This method shows all political parties data"""
 		return self.parties
 	@staticmethod
 	def edit_party(party_id):
