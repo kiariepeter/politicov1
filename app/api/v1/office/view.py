@@ -9,7 +9,7 @@ def index():
 @office_Blueprint.route('/add_office',methods = ['POST'])
 def add_office():
 	"""Given that i am an admin i should be able to add a political office
-	   When i visit .../api/v1/add_office endpoint using POST method"""
+	   When i visit ../api/v1/add_office endpoint using POST method"""
 	try:
 		if not request.get_json():
 			return make_response(jsonify({'status':401}),401)
