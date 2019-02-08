@@ -1,4 +1,4 @@
-# Politico       [![Build Status](https://travis-ci.com/kiariepeter/politico.svg?branch=master)](https://travis-ci.com/kiariepeter/politico)  [![Coverage Status](https://coveralls.io/repos/github/kiariepeter/politicov1/badge.svg?branch=master)](https://coveralls.io/github/kiariepeter/politicov1?branch=master)
+# Politicov1       [![Build Status](https://travis-ci.com/kiariepeter/politico.svg?branch=master)](https://travis-ci.com/kiariepeter/politico)  [![Coverage Status](https://coveralls.io/repos/github/kiariepeter/politicov1/badge.svg?branch=master)](https://coveralls.io/github/kiariepeter/politicov1?branch=master)
 
 Politicov1 involves endpoints to add,edit,delete and update political parties and officess.
 
