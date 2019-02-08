@@ -4,6 +4,8 @@ party_Blueprint = Blueprint('party',__name__)
 
 @party_Blueprint.route('/get_parties')
 def index():
+	"""Given that i am an admin i should be able to get a list of all political parties
+	   When i visit .../api/v1/get_parties endpoint using GET method"""
 	return make_response(jsonify(parties),200)
 	
 @party_Blueprint.route('/add_party',methods = ['POST'])
@@ -31,8 +33,8 @@ def add_aparty():
 
 @party_Blueprint.route('/get_party/<int:party_id>',methods =['GET'])
 def get_party(party_id):
-	"""Given that i am an admin i should be able to get a list of all political parties
-	   When i visit .../api/v1/get_parties endpoint using GET method"""
+	"""Given that i am an admin i should be able to get a  specific political party
+	   When i visit .../api/v1/get_party/1 endpoint using GET method"""
 	if party_id:
 		for party_dict in parties:
 			for key in party_dict:
@@ -48,6 +50,7 @@ def get_party(party_id):
 
 @party_Blueprint.route('/update_party/<int:party_id>',methods = ['PATCH'])
 def update_party(party_id):
+
 	if request.method =="PATCH":
 		if party_id:
 			if not request.get_json():
