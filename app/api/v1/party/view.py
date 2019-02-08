@@ -50,7 +50,8 @@ def get_party(party_id):
 
 @party_Blueprint.route('/update_party/<int:party_id>',methods = ['PATCH'])
 def update_party(party_id):
-
+	"""Given that i am an admin i should be able to edit a specific political party
+	   When i visit to .../api/v1/edit_party endpoint using PUT method"""
 	if request.method =="PATCH":
 		if party_id:
 			if not request.get_json():
