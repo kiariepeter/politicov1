@@ -4,7 +4,7 @@ office_Blueprint = Blueprint('office',__name__)
 
 @office_Blueprint.route('/get_offices')
 def index():
-	return make_response(jsonify(offices),200)
+	return make_response(jsonify({"office":offices}),201)
 	
 @office_Blueprint.route('/add_office',methods = ['POST'])
 def add_office():
@@ -26,14 +26,13 @@ def add_office():
 	except Exception as e:
 		return make_response(jsonify({'message':'Bad request','status':400}),400)
 @office_Blueprint.route('/get_office/<int:office_id>',methods =['GET'])
-def get_party(office_id):
+def get_office(office_id):
 	if office_id:
 		for office_dict in offices:
-			for key in office_dict:
-				if office_dict[key] == office_id:
-					return make_response(jsonify({'status':201,'office_data':office_dict}),201)
-				else:
-					return make_response(jsonify({'status':404,'message':'party not found'}),404)
+			if office_dict['office_id'] == office_id:
+				return make_response(jsonify({'status':201,'office_data':office_dict}),201)
+			else:
+				return make_response(jsonify({'status':404,'message':'party not found'}),404)
 
 	else:
 		return make_response(jsonify({'status':401,'message':'office_id missing'},401))
