@@ -24,8 +24,8 @@ Politicov1 involves endpoints to add,edit,delete and update political parties an
 
 ## Running it on machine
 - Create a .env file to store your environment variables: `touch .venv`
-- In the `.venv` file add this line: `export SECRET=<your-secret-key-here`
-- On terminal do: `source .venv`
+- In the `.env` file add this line: `export SECRET=<your-secret-key-here`
+- On terminal do: `source .env`
 - Run the application: `python run`
 - The api endpoints can be consumed using postman.
 
