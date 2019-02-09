@@ -9,7 +9,7 @@ class Party(object):
 		self.parties = parties.append({'party_id':1,'party_name':'Nark','logo':'http://www.lpolitio.com/logo.jpg','members':40})
 		
 	def add_party(self):
-		"""This method saves party data """
+		"""This method saves party data"""
 		new_party = {
 			"party_id": len(parties) + 1,
 			"party_name": self.party_name,
@@ -23,7 +23,7 @@ class Party(object):
 		return self.parties
 	@staticmethod
 	def edit_party(party_id):
-		"""This method edits  a specific political party in the list """
+		"""This method edits  a specific political party in the list"""
 		task = [party for party in parties if party["party_id"] == party_id]
 		if not task:
 			return make_response(jsonify({
