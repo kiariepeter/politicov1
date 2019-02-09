@@ -23,7 +23,7 @@ class Party(object):
 		return self.parties
 	@staticmethod
 	def edit_party(party_id):
-		"""This method edits  a specific political party in the list"""
+		"""This method edits  a specific political party in the list """
 		task = [party for party in parties if party["party_id"] == party_id]
 		if not task:
 			return make_response(jsonify({
