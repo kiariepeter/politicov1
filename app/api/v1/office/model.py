@@ -8,7 +8,7 @@ class Office(object):
 		self.offices = offices.append({'office_id':1,'office_name':'Office of the president','logo':'http://www.lpolitio.com/logo.jpg'})
 		
 	def add_office(self):
-		"""This method saves Office data"""
+		"""This method saves Office data and appends it to the offices list"""
 		new_office = {
 			"office_id": len(offices) + 1,
 			"office_name": self.office_name,

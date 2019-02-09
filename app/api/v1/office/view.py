@@ -3,11 +3,19 @@ from app.api.v1.office.model import Office,  offices
 office_Blueprint = Blueprint('office',__name__)
 
 @office_Blueprint.route('/get_offices')
+
 def index():
 	return make_response(jsonify({"office":offices}),201)
+def get_offices():
+	"""Given that i am an admin i should be able to get a list of all political offices
+     When i visit .../api/v1/get_offices endpoint using GET method"""
+	return make_response(jsonify(offices),200)
+
 	
 @office_Blueprint.route('/add_office',methods = ['POST'])
 def add_office():
+	"""Given that i am an admin i should be able to add a political office
+	   When i visit ../api/v1/add_office endpoint using POST method"""
 	try:
 		if not request.get_json():
 			return make_response(jsonify({'status':401}),401)
@@ -27,6 +35,9 @@ def add_office():
 		return make_response(jsonify({'message':'Bad request','status':400}),400)
 @office_Blueprint.route('/get_office/<int:office_id>',methods =['GET'])
 def get_office(office_id):
+
+	"""Given that i am an admin i should be able to get a specific l political office
+       When i append party_id to .../api/v1/get_office endpoint using GET method"""
 	if office_id:
 		for office_dict in offices:
 			if office_dict['office_id'] == office_id:
@@ -41,6 +52,8 @@ def get_office(office_id):
 
 @office_Blueprint.route('/update_office/<int:office_id>',methods = ['PATCH'])
 def update_office(office_id):
+	"""Given that i am an admin i should be able to edit a specific political office
+	   When i visit to .../api/v1/edit_office endpoint using PATCH method"""
 	if request.method =="PATCH":
 		if office_id:
 			if not request.get_json():
@@ -58,6 +71,8 @@ def update_office(office_id):
 
 @office_Blueprint.route('/delete_office/<int:office_id>',methods = ['DELETE'])
 def delete_office(office_id):
+	"""Given that i am an admin i should be able to delete a specific political office
+       When i append party_id to .../api/v1/delete_office endpoint using DELETE method"""
 	if request.method == "DELETE":
 		if office_id:
 			data = [office for office in offices if office["office_id"] == office_id]
