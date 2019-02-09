@@ -9,7 +9,7 @@ class Party(object):
 		self.parties = parties.append({'party_id':1,'party_name':'Nark','logo':'http://www.lpolitio.com/logo.jpg','members':40})
 		
 	def add_party(self):
-		"""This method saves party data"""
+		"""This method saves party data """
 		new_party = {
 			"party_id": len(parties) + 1,
 			"party_name": self.party_name,
