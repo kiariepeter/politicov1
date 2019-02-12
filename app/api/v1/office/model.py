@@ -1,43 +1,45 @@
 from flask import make_response, jsonify, request
 
-offices = []
+offices = {}
 
 
 class Office(object):
-    def __init__(self, office_name, logo):
-        self.office_id = len(offices) + 1
-        self.office_name = office_name
-        self.logo = logo
-        self.offices = offices.append(
-            {'office_id': 1, 'office_name': 'Office of the president', 'logo': 'http://www.lpolitio.com/logo.jpg'})
+    def __init__(self):
+        self.office_id = 0
+        self.office_name = ''
+        self.logo = ''
+        self.offices = offices
 
-    def add_office(self):
-        """This method saves Office data and appends it to the offices list"""
+    @staticmethod
+    def add_office(office_name, logo):
+        """This method saves Office data and adds it to the offices dictionary"""
+        office_id = len(offices) + 1
         new_office = {
-            "office_id": len(offices) + 1,
-            "office_name": self.office_name,
-            "logo": self.logo
+            "office_id": office_id,
+            "office_name": office_name,
+            "logo": logo
         }
-        offices.append(new_office)
+        offices[office_id] = new_office
 
+    @property
     def get_offices(self):
+        """ This returns all offices """
         return self.offices
 
     @staticmethod
-    def edit_office(office_id):
-        task = [office for office in offices if office["office_id"] == office_id]
-        if not task:
-            return make_response(jsonify({
-                "status": "OK",
-                "Message": "Office not found"
-            }), 404)
-        task[0]['logo'] = request.json.get('logo', task[0]['logo'])
-        task[0]['office_name'] = request.json.get('office_name', task[0]['office_name'])
-        return make_response(jsonify({
-            "status": 201,
-            "message": "Office Updated successfully",
-            "new details": task[0]
-        }), 201)
+    def edit_office(office_id, office_name, logo):
+        """This method updates the office dictionary of a specific office"""
+        if office_id:
+            if office_id in offices:
+                offices[office_id]['office_name'] = office_name
+                offices[office_id]['logo'] = logo
+                return make_response(jsonify({
+                    "status": 201,
+                    "message": "Office Updated successfully",
+                    "new details": offices.get(office_id)
+                }), 201)
+            return make_response(jsonify({'status': 404, 'message': 'office not found'}), 404)
+        return make_response(jsonify({'status': 401, 'message': 'missing office id'}))
 
 
 
