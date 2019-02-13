@@ -17,7 +17,7 @@ def add_office():
        When i visit ../api/v1/offices endpoint using POST method"""
     try:
         if not request.get_json():
-            return make_response(jsonify({'status': 401, "message": "missing input data"}), 401)
+            return make_response(jsonify({'status': 409, "message": "missing input data"}), 409)
         office_data = request.get_json(force=True)
         office_name = office_data['office_name']
         logo = office_data['logo']
@@ -59,8 +59,7 @@ def update_office(office_id):
         office = Office()
         res = office.edit_office(office_id, office_name, logo)
         return res
-    else:
-        return make_response(jsonify({'status': 401, 'message': 'office_id missing'}, 401))
+    return make_response(jsonify({'status': 401, 'message': 'office_id missing'}, 401))
 
 
 @office_Blueprint.route('/offices/<int:office_id>', methods=['DELETE'])
@@ -79,5 +78,5 @@ def delete_office(office_id):
             "Message": "Office deleted  successfully",
             "offices": offices
         }), 201)
-    return make_response(jsonify({'status': 401, 'message': 'office_id missing'}, 401))
+    return make_response(jsonify({'status': 409, 'message': 'office_id missing'}, 409))
 

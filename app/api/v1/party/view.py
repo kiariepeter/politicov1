@@ -36,7 +36,7 @@ def add_party():
 
 
 @party_Blueprint.route('/parties/<int:party_id>', methods=['GET'])
-def get_party(party_id):
+def get_a_specific_party(party_id):
     """Given that i am an admin i should be able to get a  specific political party
        When i visit .../api/v1/parties/1 endpoint using GET method"""
     if party_id:
@@ -60,8 +60,8 @@ def update_party(party_id):
         party = Party()
         res = party.edit_party(party_id,party_name, logo, members)
         return res
-    else:
-        return make_response(jsonify({'status': 401, 'message': 'party_id missing'}, 401))
+
+    return make_response(jsonify({'status': 401, 'message': 'party_id missing'}, 401))
 
 
 @party_Blueprint.route('/parties/<int:party_id>', methods=['DELETE'])

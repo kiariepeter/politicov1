@@ -32,14 +32,14 @@ Politicov1 involves endpoints to add,edit,delete and update political parties an
 ## Endpoints
 | Endpoint                                   | FUNCTIONALITY                      |
 | ----------------------------------------   |:----------------------------------:|
-| POST  /api/v1/add_party                        | CREATE political party             |
-| GET  /api/v1/get_parties                         | GET ALL political parties          |
-| GET  /api/v1/get_party/<int:party_id>          | GET ONE political party            |
-| DELETE  /api/v1/delete_party                      | DELETE ONE political party         |
-| PATCH  /api/v1/update_party/<int:party_id>          | UPDATE ONE political party         |
-| POST  /api/v1/add_office                       | CREATE government office           |
-| GET  /api/v1/get_office/<int:office_id>        | GET ONE government office          |
-| GET  /api/v1/get_offices                        | GET ALL government offices          |
+| POST  /api/v1/parties                        | CREATE political party             |
+| GET  /api/v1/parties                         | GET ALL political parties          |
+| GET  /api/v1/parties/<int:party_id>          | GET ONE political party            |
+| DELETE  /api/v1/parties                      | DELETE ONE political party         |
+| PATCH  /api/v1/parties/<int:party_id>          | UPDATE ONE political party         |
+| POST  /api/v1/offices                       | CREATE government office           |
+| GET  /api/v1/offices/<int:office_id>        | GET ONE government office          |
+| GET  /api/v1/offices                        | GET ALL government offices          |
 
 
 ## Built With
