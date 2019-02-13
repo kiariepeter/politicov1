@@ -7,6 +7,7 @@ class User(object):
 		self.user_id = 0
 		self.name = ''
 		self.email = ''
+		self.national_id = 0
 		self.phone ='',
 		self.photo = ''
 		self.password =''
@@ -14,13 +15,14 @@ class User(object):
 		self.status = 1
 		self.users = users
 
-	def create_user(self,name,email,phone,photo,password):
+	def create_user(self,name,email,phone,photo,password,national_id):
 		user_id = len(users) + 1
 		new_users = {'user_id':user_id,
 					'name':name,
 					'email':email,
 					'phone':phone,
 					'photo':photo,
+					'national_id':national_id,
 					'password':password,
 					'user_type':2,
 					'status':1}
