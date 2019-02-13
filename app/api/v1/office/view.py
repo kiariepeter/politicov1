@@ -49,36 +49,34 @@ def get_office(office_id):
 def update_office(office_id):
     """Given that i am an admin i should be able to edit a specific political office
        When i visit to .../api/v1/offices endpoint using PATCH method"""
-    if request.method == "PATCH":
-        if office_id:
-            if not request.get_json():
-                return make_response(jsonify({'status': 401, 'message': 'empty body'}, 401))
-            office_data = request.get_json()
-            office_name = office_data['office_name']
-            logo = office_data['logo']
-            office = Office()
-            res = office.edit_office(office_id, office_name, logo)
-            return res
-        else:
-            return make_response(jsonify({'status': 401, 'message': 'office_id missing'}, 401))
+    if office_id:
+        if not request.get_json():
+            return make_response(jsonify({'status': 401, 'message': 'empty body'}, 401))
+        office_data = request.get_json()
+        office_name = office_data['office_name']
+        logo = office_data['logo']
+        office = Office()
+        res = office.edit_office(office_id, office_name, logo)
+        return res
+    else:
+        return make_response(jsonify({'status': 401, 'message': 'office_id missing'}, 401))
 
 
 @office_Blueprint.route('/offices/<int:office_id>', methods=['DELETE'])
 def delete_office(office_id):
     """Given that i am an admin i should be able to delete a specific political office
-       When i append party_id to .../api/v1/delete_office endpoint using DELETE method"""
-    if request.method == "DELETE":
-        if office_id:
-            if office_id not in offices:
-                return make_response(jsonify({
-                    "status": 404,
-                    "Product": "Office not found"
-                }), 404)
-            del offices[office_id]
+       When i append party_id to .../api/v1/offices endpoint using DELETE method"""
+
+    if office_id:
+        if office_id not in offices:
             return make_response(jsonify({
-                "status": 201,
-                "Message": "Office deleted  successfully",
-                "offices": offices
-            }), 201)
-        return make_response(jsonify({'status': 401, 'message': 'office_id missing'}, 401))
-    return make_response(jsonify({'message': 'Bad request', 'status': 400}), 400)
+                "status": 404,
+                "Product": "Office not found"
+            }), 404)
+        del offices[office_id]
+        return make_response(jsonify({
+            "status": 201,
+            "Message": "Office deleted  successfully",
+            "offices": offices
+        }), 201)
+    return make_response(jsonify({'status': 401, 'message': 'office_id missing'}, 401))
