@@ -26,7 +26,7 @@ def add_user():
 
 @user_blueprint.route('/users',methods = ['GET'])
 def get_all_users():
-	"""Given that i am an admin i should view all rgistered users"""
+	"""Given that i am an admin i should view all registered users"""
 	if users:
 		return make_response(jsonify({'status':201,'users':users}),201)
 	return make_response(jsonify({'status':404,'message':'no users found'}),404)
