@@ -39,11 +39,11 @@ def add_party():
 def get_a_specific_party(party_id):
     """Given that i am an admin i should be able to get a  specific political party
        When i visit .../api/v1/parties/1 endpoint using GET method"""
-    if party_id:
-        if party_id in parties:
-            return make_response(jsonify({'status': 201, 'party': parties.get(party_id)}),201)
-        return make_response(jsonify({'status': 404, 'message': 'party not found'}), 404)
-    return make_response(jsonify({'status': 401, 'message': 'party_id missing'}, 401))
+    if not party_id:
+        return make_response(jsonify({'status': 401, 'message': 'party_id missing'}, 401))
+    if party_id in parties:
+        return make_response(jsonify({'status': 201, 'party': parties.get(party_id)}),201)
+    return make_response(jsonify({'status': 404, 'message': 'party not found'}), 404)
 
 
 @party_Blueprint.route('/parties/<int:party_id>', methods=['PATCH'])
