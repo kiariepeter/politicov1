@@ -14,7 +14,7 @@ def add_user():
 		phone =  post_data['phone']
 		email =  post_data['email']
 		photo =  post_data['photo']
-		password =  post_data['password']
+		password = post_data['password']
 		for x in users.values():
 			if x['email'] == email:
 				return make_response(jsonify({'status':203,"message":"user with the same email already exists"}),203)
