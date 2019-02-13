@@ -69,7 +69,6 @@ def update_party(party_id):
 def delete_party(party_id):
     """Given that i am an admin i should be able to delete a specific political party
        When i append party_id to .../api/v1/parties endpoint using DELETE method"""
-
     if party_id:
         if party_id in parties:
             del parties[party_id]
