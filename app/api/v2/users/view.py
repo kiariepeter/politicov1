@@ -13,13 +13,14 @@ def add_user():
 		name =  post_data['name']
 		phone =  post_data['phone']
 		email =  post_data['email']
+		national_id =  post_data['national_id']
 		photo =  post_data['photo']
 		password =  post_data['password']
 		for x in users.values():
-			if x['email'] == email:
-				return make_response(jsonify({'status':203,"message":"user with the same email already exists"}),203)
+			if x['email'] == email and x['national_id'] == national_id:
+				return make_response(jsonify({'status':203,"message":"user with the same details already exists"}),203)
 		user = User()
-		user.create_user(name,email,phone,photo,password)
+		user.create_user(name,email,phone,photo,password,national_id)
 		return make_response(jsonify({'status':201,'message':'user added successfully','users':users}),201)
 	except Exception as e:
 		return make_response(jsonify({'status':400 ,'message':'bad request'}))
