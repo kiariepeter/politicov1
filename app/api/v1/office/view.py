@@ -66,7 +66,6 @@ def update_office(office_id):
 def delete_office(office_id):
     """Given that i am an admin i should be able to delete a specific political office
        When i append party_id to .../api/v1/offices endpoint using DELETE method"""
-
     if office_id:
         if office_id not in offices:
             return make_response(jsonify({
