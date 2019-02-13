@@ -44,11 +44,11 @@ def get_office(office_id):
         return make_response(jsonify({'status': 404, 'message': 'party not found'}), 404)
     return make_response(jsonify({'status': 401, 'message': 'office_id missing'}, 401))
 
-
 @office_Blueprint.route('/offices/<int:office_id>', methods=['PATCH'])
 def update_office(office_id):
     """Given that i am an admin i should be able to edit a specific political office
        When i visit to .../api/v1/offices endpoint using PATCH method"""
+
     if office_id:
         if not request.get_json():
             return make_response(jsonify({'status': 401, 'message': 'empty body'}, 401))
@@ -66,6 +66,7 @@ def update_office(office_id):
 def delete_office(office_id):
     """Given that i am an admin i should be able to delete a specific political office
        When i append party_id to .../api/v1/offices endpoint using DELETE method"""
+       When i append party_id to .../api/v1/delete_office endpoint using DELETE method"""
     if office_id:
         if office_id not in offices:
             return make_response(jsonify({
