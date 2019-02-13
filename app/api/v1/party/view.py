@@ -36,6 +36,7 @@ def add_party():
 
 
 @party_Blueprint.route('/parties/<int:party_id>', methods=['GET'])
+
 def get_party_by_id(party_id):
     """Given that i am an admin i should be able to get a  specific political party
        When i visit .../api/v1/parties/1 endpoint using GET method"""
@@ -45,31 +46,46 @@ def get_party_by_id(party_id):
         return make_response(jsonify({'status': 404, 'message': 'party not found'}), 404)
     return make_response(jsonify({'status': 401, 'message': 'party_id missing'}, 401))
 
+@party_Blueprint.route('/parties/<int:party_id>', methods=['PATCH'])
+def update_party(party_id):
+    """Given that i am an admin i should be able to edit a specific political party
+       When i visit to .../api/v1/parties endpoint using PUT method"""
+    
+      if party_id:
+          if not request.get_json():
+              return make_response(jsonify({'status': 401, 'message': 'empty body'}, 401))
+          party_data = request.get_json()
+          party_name = party_data['party_name']
+          logo = party_data['logo']
+          members = party_data['members']
+          party = Party()
+          res = party.edit_party(party_id,party_name, logo, members)
+          return res
+      else:
+          return make_response(jsonify({'status': 401, 'message': 'party_id missing'}, 401))
 
 @party_Blueprint.route('/parties/<int:party_id>', methods=['PATCH'])
 def update_party(party_id):
     """Given that i am an admin i should be able to edit a specific political party
        When i visit to .../api/v1/parties endpoint using PUT method"""
-    if request.method == "PATCH":
-        if party_id:
-            if not request.get_json():
-                return make_response(jsonify({'status': 401, 'message': 'empty body'}, 401))
-            party_data = request.get_json()
-            party_name = party_data['party_name']
-            logo = party_data['logo']
-            members = party_data['members']
-            party = Party()
-            res = party.edit_party(party_id,party_name, logo, members)
-            return res
-        else:
-            return make_response(jsonify({'status': 401, 'message': 'party_id missing'}, 401))
+    if party_id:
+        if not request.get_json():
+            return make_response(jsonify({'status': 401, 'message': 'empty body'}, 401))
+        party_data = request.get_json()
+        party_name = party_data['party_name']
+        logo = party_data['logo']
+        members = party_data['members']
+        party = Party()
+        res = party.edit_party(party_id,party_name, logo, members)
+        return res
+    else:
+        return make_response(jsonify({'status': 401, 'message': 'party_id missing'}, 401))
 
 
 @party_Blueprint.route('/parties/<int:party_id>', methods=['DELETE'])
 def delete_party(party_id):
     """Given that i am an admin i should be able to delete a specific political party
        When i append party_id to .../api/v1/parties endpoint using DELETE method"""
-
     if party_id:
         if party_id in parties:
             del parties[party_id]
