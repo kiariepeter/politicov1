@@ -69,17 +69,17 @@ def update_party(party_id):
 def delete_party(party_id):
     """Given that i am an admin i should be able to delete a specific political party
        When i append party_id to .../api/v1/parties endpoint using DELETE method"""
-    if request.method == "DELETE":
-        if party_id:
-            if party_id in parties:
-                del parties[party_id]
-                return make_response(jsonify({
-                    "status": "OK",
-                    "Message": "Party deleted deleted successfully",
-                    'parties': parties
-                }), 200)
-            return make_response(jsonify({'status': 404, 'message': 'party not found'}), 404)
 
-        return make_response(jsonify({'status': 401, 'message': 'party_id missing'}, 401))
+    if party_id:
+        if party_id in parties:
+            del parties[party_id]
+            return make_response(jsonify({
+                "status": "OK",
+                "Message": "Party deleted deleted successfully",
+                'parties': parties
+            }), 200)
+        return make_response(jsonify({'status': 404, 'message': 'party not found'}), 404)
 
-    return make_response(jsonify({'message': 'Bad request', 'status': 400}), 400)
+    return make_response(jsonify({'status': 401, 'message': 'party_id missing'}, 401))
+
+
