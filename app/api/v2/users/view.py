@@ -35,8 +35,8 @@ def get_all_users():
 def get_user(user_id):
 	"""Given that i am an admin i should be able to view a specific user details"""
 	if user_id in users:
-		return make_response(jsonify({'status':201, 'user': users.get(user_id) }))
-	return make_response(jsonify({'status':404, 'message':'user not found'}))
+		return make_response(jsonify({'status':201, 'user': users.get(user_id) }),201)
+	return make_response(jsonify({'status':404, 'message':'user not found'}),404)
 
 @user_blueprint.route('/users/<int:user_id>',methods =['PATCH'])
 def update_user(user_id):
