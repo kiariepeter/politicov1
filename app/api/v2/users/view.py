@@ -53,7 +53,7 @@ def add_user():
 		if check_if_integer !=True:errors.append(check_if_integer)
 		check_if_validurl = validate.is_valid_url(photo)
 		if check_if_validurl !=True:errors.append(check_if_validurl)
-		check_if_valid_email = validate.is_valid_email(email)
+		check_if_valid_email = validate.is_validEmail(email)
 		if check_if_valid_email !=True:errors.append(check_if_valid_email)
 		check_if_text_only = validate.is_text_only(name)
 		if check_if_text_only !=True:errors.append(check_if_text_only)

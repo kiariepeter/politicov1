@@ -39,7 +39,7 @@ class My_validator(object):
 			return make_response(jsonify({"status": 409, "message":"invalid url "+url}), 409)
 		return True
 	@staticmethod
-	def is_valid_email(email):
+	def is_validEmail(email):
 		"""This checks if the submitted email is valid"""
 		if not validators.email(email):
 			return make_response(jsonify({"status":409, "message":"Not a valid email "+email}), 409)
@@ -52,11 +52,12 @@ class My_validator(object):
 			return make_response(jsonify({"status":409,"message": word+" should contain letters only "}), 409)
 		return True
 	@staticmethod
-	def is_numbers_only(number):
+	def is_numbers(number):
 		"""This method validates numbers submitted should only contain numbers"""
-		if not number.isdigit():
-			return make_response(jsonify({"status":409, "message": number+ "This should contain numbers only"}), 409)
-		return True
+		if  number.isdigit():
+			return True
+		return make_response(jsonify({"status":409, "message": number+ "This should contain numbers only"}), 409)
+		
 
 
 
