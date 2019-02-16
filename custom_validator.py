@@ -35,9 +35,10 @@ class My_validator(object):
 	@staticmethod
 	def is_valid_url(url):
 		"""This method checks if  the url submitted is valid"""
-		if not validators.url(url):
-			return make_response(jsonify({"status": 409, "message":"invalid url "+url}), 409)
-		return True
+		if  validators.url(url):
+			return True
+		return make_response(jsonify({"status": 409, "message":"invalid url "+url}), 409)
+		
 	@staticmethod
 	def is_validEmail(email):
 		"""This checks if the submitted email is valid"""
