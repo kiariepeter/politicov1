@@ -57,12 +57,13 @@ def add_user():
 		if check_if_valid_email !=True:errors.append(check_if_valid_email)
 		check_if_text_only = validate.is_text_only(name)
 		if check_if_text_only !=True:errors.append(check_if_text_only)
+
+		for x in users.values():
+			if x['email'] == email and x['national_id'] == national_id:
+				 error.append(make_response(jsonify({'status':203,"message":"user with the same details already exists"}),203))
 		if len(errors) > 0:
 			for e in errors:
 				return e
-		for x in users.values():
-			if x['email'] == email and x['national_id'] == national_id:
-				return make_response(jsonify({'status':203,"message":"user with the same details already exists"}),203)
 		user = User()
 		res = user.create_user([name,email,phone,photo,password,national_id])
 		return res
