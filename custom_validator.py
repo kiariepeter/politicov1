@@ -5,7 +5,7 @@ class My_validator(object):
 
 	@staticmethod
 	def missing_value_validator(input_data,post_data):
-		"""This method checks if the posted data has all expected fields"""
+		"""This method checks if the posted data has all expected fields """
 		for x in input_data:
 			if x not in post_data:
 				return make_response(jsonify({"status":404, "message":"missing element "+x}),404)
