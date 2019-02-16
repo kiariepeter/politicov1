@@ -3,7 +3,7 @@ conn = connect()
 cur = conn.cursor()
 
 
-tbl_candidates = """CREATE TABLE IF NOT EXISTS tbl_candidates(
+tblCandidates = """CREATE TABLE IF NOT EXISTS tbl_candidates(
         id SERIAL PRIMARY KEY NOT NULL,
         party_id INTEGER NOT NULL DEFAULT 0,
         office_id INTEGER NOT NULL DEFAULT 0,
@@ -18,4 +18,4 @@ tbl_candidates = """CREATE TABLE IF NOT EXISTS tbl_candidates(
 
 
 if __name__=="__main__":
-    cur.execute(tbl_candidates)
+    cur.execute(tblCandidates)

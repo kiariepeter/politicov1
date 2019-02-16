@@ -3,7 +3,7 @@ conn = connect()
 cur = conn.cursor()
 
 
-table_votes = """CREATE TABLE IF NOT EXISTS table_votes(
+_votes = """CREATE TABLE IF NOT EXISTS table_votes(
         id SERIAL PRIMARY KEY NOT NULL,
         createdby INTEGER NOT NULL,
         office_id INTEGER NOT NULL,
@@ -17,4 +17,4 @@ table_votes = """CREATE TABLE IF NOT EXISTS table_votes(
 
 
 if __name__=="__main__":
-    cur.execute(table_votes)
+    cur.execute(_votes)
