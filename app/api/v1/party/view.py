@@ -41,9 +41,9 @@ def get_a_specific_party(party_id):
        When i visit .../api/v1/parties/1 endpoint using GET method"""
     if not party_id:
         return make_response(jsonify({'status': 401, 'message': 'party_id missing'}, 401))
-    if party_id in parties:
-        return make_response(jsonify({'status': 201, 'party': parties.get(party_id)}),201)
-    return make_response(jsonify({'status': 404, 'message': 'party not found'}), 404)
+    if party_id not in parties:
+        return make_response(jsonify({'status': 404, 'message': 'party not found'}), 404)
+    return make_response(jsonify({'status': 201, 'party': parties.get(party_id)}),201)
 
 
 @party_Blueprint.route('/parties/<int:party_id>', methods=['PATCH'])
