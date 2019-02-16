@@ -11,6 +11,7 @@ def create_app():
 
     # instantiate the app
     app = Flask(__name__, instance_relative_config=True)
+    
     # url prefix for api version 1
     version1 = "/api/v1"
         # url prefix for api version 2

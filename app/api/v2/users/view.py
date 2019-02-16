@@ -1,25 +1,60 @@
 from flask import request, jsonify, Blueprint, make_response
 from app.api.v2.users.Usermodel import User, users
+import jwt
+import datetime
+
+MY_APIKEY = 'hj5499GFWDRWw988ek<MKL(IEI$NMR'
 
 user_blueprint = Blueprint('users', __name__)
+
+
+# def tokenizer(f):
+# 	@wraps(f)
+# 	def my_wrapper(*args, **kwargs):
+# 		token = request.args.get('token')
+# 		if not token:
+# 			return make_response(jsonify({'status':404, 'message':'token is missing'}), 404)
+# 		try:
+# 			data = jwt.decode(token, MY_APIKEY)
+# 		except Exception as e:
+# 			return make_response(jsonify({'status':400, 'message':'invalid token passed'}),400)
+
+# 		return f(*args, **kwargs)
+# 	return my_wrapper
+
+
+
+def validator(inputs,post_data):
+	return jsonify({"status":201})
+	if len(post_data) < 1:
+		return jsonify("empty")
+	for x in post_data:
+		if x =="" or x ==" ":
+			return jsonify({'message':'empty input'+post_data[x]})
+
+
 
 @user_blueprint.route('/users',methods = ['POST'])
 def add_user():
 	"""Given that am a new user i should be able to register"""
+	validator('tets',request.get_json())
 	try:
 		if not request.get_json():
 			return make_response(jsonify({'status':404 , 'message':'missing input'}),404)
+
 		post_data = request.get_json()
+		
 		name =  post_data['name']
 		phone =  post_data['phone']
 		email =  post_data['email']
 		photo =  post_data['photo']
 		password = post_data['password']
+		national_id = post_data['national_id']
 		for x in users.values():
-			if x['email'] == email:
-				return make_response(jsonify({'status':203,"message":"user with the same email already exists"}),203)
+			if x['email'] == email and x['national_id'] == national_id:
+				return make_response(jsonify({'status':203,"message":"user with the same details already exists"}),203)
 		user = User()
-		user.create_user(name,email,phone,photo,password)
+		res = user.create_user(name,email,phone,photo,password,national_id)
 		return make_response(jsonify({'status':201,'message':'user added successfully','users':users}),201)
 	except Exception as e:
 		return make_response(jsonify({'status':400 ,'message':'bad request'}))
@@ -27,8 +62,11 @@ def add_user():
 @user_blueprint.route('/users',methods = ['GET'])
 def get_all_users():
 	"""Given that i am an admin i should view all registered users"""
-	if users:
-		return make_response(jsonify({'status':201,'users':users}),201)
+	user = User()
+	all_users = user.get_users()
+	if all_users:
+		
+		return make_response(all_users,201)
 	return make_response(jsonify({'status':404,'message':'no users found'}),404)
 
 @user_blueprint.route('/users/<int:user_id>',methods = ['GET'])
