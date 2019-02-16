@@ -45,4 +45,18 @@ class My_validator(object):
 			return make_response(jsonify({"status":409, "message":"Not a valid email "+email}), 409)
 		return True
 
+	@staticmethod
+	def is_text_only(word):
+		"""This method checks is word submitted conatins letters only"""
+		if not word.isalpha():
+			return make_response(jsonify({"status":409,"message": word+" should contain letters only "}), 409)
+		return True
+	@staticmethod
+	def is_numbers_only(number):
+		"""This method validates numbers submitted should only contain numbers"""
+		if not number.isdigit():
+			return make_response(jsonify({"status":409, "message": number+ "This should contain numbers only"}), 409)
+		return True
+
+
 

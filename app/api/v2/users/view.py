@@ -3,6 +3,7 @@ from wtforms import Form, BooleanField, StringField, PasswordField, validators
 from app.api.v2.users.Usermodel import User, users
 import jwt
 import datetime
+import json
 from custom_validator import My_validator as validate
 
 MY_APIKEY = 'hj5499GFWDRWw988ek<MKL(IEI$NMR'
@@ -31,6 +32,7 @@ user_blueprint = Blueprint('users', __name__)
 @user_blueprint.route('/users',methods = ['POST'])
 def add_user():
 	"""Given that am a new user i should be able to register"""
+	errors = []
 	try:
 		if not request.get_json():
 			return make_response(jsonify({'status':404 , 'message':'missing input'}),404)
@@ -38,9 +40,9 @@ def add_user():
 		post_data = request.get_json()
 
 		check_missingfields= validate.missing_value_validator(['name','phone','email','photo','password','national_id'],post_data)
-		if  check_missingfields !=True:return check_missingfields
+		if  check_missingfields !=True:errors.append(check_missingfields)
 		check_emptyfield = validate.empty_string_validator(['name','phone','email','photo','password'],post_data)
-		if check_emptyfield !=True:return check_emptyfield
+		if check_emptyfield !=True:errors.append(check_emptyfield)
 		name =  post_data['name']
 		phone =  post_data['phone']
 		email =  post_data['email']
@@ -48,9 +50,16 @@ def add_user():
 		password = post_data['password']
 		national_id = post_data['national_id']
 		check_if_integer = validate.is_integer_validator(['national_id'],post_data)
-		if check_if_integer !=True:return check_if_integer
+		if check_if_integer !=True:errors.append(check_if_integer)
 		check_if_validurl = validate.is_valid_url(photo)
-		if check_if_validurl !=True:return check_if_validurl
+		if check_if_validurl !=True:errors.append(check_if_validurl)
+		check_if_valid_email = validate.is_valid_email(email)
+		if check_if_valid_email !=True:errors.append(check_if_valid_email)
+		check_if_text_only = validate.is_text_only(name)
+		if check_if_text_only !=True:errors.append(check_if_text_only)
+		if len(errors) > 0:
+			for e in errors:
+				return e
 		for x in users.values():
 			if x['email'] == email and x['national_id'] == national_id:
 				return make_response(jsonify({'status':203,"message":"user with the same details already exists"}),203)
