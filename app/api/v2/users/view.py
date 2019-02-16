@@ -1,7 +1,9 @@
 from flask import request, jsonify, Blueprint, make_response
+from wtforms import Form, BooleanField, StringField, PasswordField, validators
 from app.api.v2.users.Usermodel import User, users
 import jwt
 import datetime
+from custom_validator import My_validator as validate
 
 MY_APIKEY = 'hj5499GFWDRWw988ek<MKL(IEI$NMR'
 
@@ -24,40 +26,42 @@ user_blueprint = Blueprint('users', __name__)
 
 
 
-def validator(inputs,post_data):
-	return jsonify({"status":201})
-	if len(post_data) < 1:
-		return jsonify("empty")
-	for x in post_data:
-		if x =="" or x ==" ":
-			return jsonify({'message':'empty input'+post_data[x]})
-
 
 
 @user_blueprint.route('/users',methods = ['POST'])
 def add_user():
 	"""Given that am a new user i should be able to register"""
-	validator('tets',request.get_json())
 	try:
 		if not request.get_json():
 			return make_response(jsonify({'status':404 , 'message':'missing input'}),404)
 
 		post_data = request.get_json()
-		
+
+		check_missingfields= validate.missing_value_validator(['name','phone','email','photo','password','national_id'],post_data)
+		if  check_missingfields !=True:return check_missingfields
+		check_emptyfield = validate.empty_string_validator(['name','phone','email','photo','password'],post_data)
+		if check_emptyfield !=True:return check_emptyfield
 		name =  post_data['name']
 		phone =  post_data['phone']
 		email =  post_data['email']
 		photo =  post_data['photo']
 		password = post_data['password']
 		national_id = post_data['national_id']
+		check_if_integer = validate.is_integer_validator(['national_id'],post_data)
+		if check_if_integer !=True:return check_if_integer
+		check_if_validurl = validate.is_valid_url(photo)
+		if check_if_validurl !=True:return check_if_validurl
 		for x in users.values():
 			if x['email'] == email and x['national_id'] == national_id:
 				return make_response(jsonify({'status':203,"message":"user with the same details already exists"}),203)
 		user = User()
-		res = user.create_user(name,email,phone,photo,password,national_id)
-		return make_response(jsonify({'status':201,'message':'user added successfully','users':users}),201)
-	except Exception as e:
-		return make_response(jsonify({'status':400 ,'message':'bad request'}))
+		res = user.create_user([name,email,phone,photo,password,national_id])
+		return res
+	except KeyError as e:
+		return make_response(jsonify({'status':400 ,'message':'bad request'}), 400)
+
+
+
 
 @user_blueprint.route('/users',methods = ['GET'])
 def get_all_users():
@@ -72,8 +76,12 @@ def get_all_users():
 @user_blueprint.route('/users/<int:user_id>',methods = ['GET'])
 def get_user(user_id):
 	"""Given that i am an admin i should be able to view a specific user details"""
-	if user_id in users:
-		return make_response(jsonify({'status':201, 'user': users.get(user_id) }),201)
+	user = User()
+	if user_id:
+		check_if_integer = validate.is_single_integer(user_id)
+		if check_if_integer !=True:return check_if_integer
+		res = user.get_userByid(user_id)
+		return res
 	return make_response(jsonify({'status':404, 'message':'user not found'}),404)
 
 @user_blueprint.route('/users/<int:user_id>',methods =['PATCH'])

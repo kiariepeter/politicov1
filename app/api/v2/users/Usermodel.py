@@ -1,4 +1,6 @@
 from flask import make_response,jsonify
+import psycopg2
+import psycopg2.extras
 from connection import connect
 import json
 import jwt
@@ -8,7 +10,7 @@ MY_APIKEY = 'hj5499GFWDRWw988ek<MKL(IEI$NMR'
 
 
 conn = connect()
-cur = conn.cursor()
+cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
 users = {}
 
 
@@ -27,23 +29,29 @@ class User(object):
 		self.status = 1
 		self.users = users
 
-	def create_user(self,name,email,phone,photo,password,national_id):
-		user_id = len(users) + 1
-		user_type = '2'
-		status ='1'
-
+	def create_user(self,users):
+		"""This method saves user data in the database"""
 		try:
-			cur.execute("INSERT INTO users(name,email,phone,national_id,photo,user_type,status) VALUES(%s ,%s ,%s, %s, %s, %s,%s )", (name,email,phone,national_id,photo,user_type,status))
-		except (Exception, psycopg2.DatabaseError )as e:
+			cur.execute("INSERT INTO tbl_users(name,email,phone,photo,password,national_id) VALUES(%s ,%s ,%s, %s, %s, %s)", (users[0],users[1],users[2],users[3],users[4],users[5]))
+			return make_response(jsonify({'status':201,'message':'user added successfully','users':users}),201)
+		except psycopg2.DatabaseError as e:
 			print(e)
+			return make_response(jsonify({'status':409,'message':"failed to save data "+str(e.args[0]) }), 409)
 
 
 
 	def get_users(self):
 		"""querying the database to get all users"""
-		cur.execute("SELECT * FROM users")
+		cur.execute("SELECT * FROM tbl_users")
 		rows = cur.fetchall()
-		return jsonify(rows)
+		return make_response(jsonify({'status':201,'users':rows}),201)
+	def get_userByid(self,user_id):
+		cur.execute("SELECT * FROM tbl_users where id = %s",(str(user_id)))
+		row = cur.fetchall()
+		size =len(row)
+		if  size > 0:
+			return make_response(jsonify({'status':201, 'user': row}), 201)
+		return make_response(jsonify({'status':404, 'message': 'user not found'}),404)
 	@staticmethod
 	def login(email,password):
 		for x in users.values():
