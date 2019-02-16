@@ -35,7 +35,7 @@ def add_user():
 	errors = []
 	try:
 		if not request.get_json():
-			return make_response(jsonify({'status':404 , 'message':'missing input'}),404)
+			error.append(make_response(jsonify({'status':404 , 'message':'missing input'}),404))
 
 		post_data = request.get_json()
 
