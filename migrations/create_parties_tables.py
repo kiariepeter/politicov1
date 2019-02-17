@@ -3,7 +3,7 @@ conn = connect()
 cur = conn.cursor()
 
 
-tableparties = """CREATE TABLE IF NOT EXISTS table_parties(
+table_parties = """CREATE TABLE IF NOT EXISTS table_parties(
         id SERIAL PRIMARY KEY NOT NULL,
         party_name VARCHAR(250) NOT NULL,
         logo VARCHAR(250) NOT NULL,
@@ -16,4 +16,4 @@ tableparties = """CREATE TABLE IF NOT EXISTS table_parties(
 
 
 if __name__=="__main__":
-    cur.execute(tableparties)
+    cur.execute(table_parties)

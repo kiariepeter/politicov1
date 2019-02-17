@@ -3,7 +3,7 @@ conn = connect()
 cur = conn.cursor()
 
 
-offices = """CREATE TABLE IF NOT EXISTS table_offices(
+table_offices = """CREATE TABLE IF NOT EXISTS table_offices(
         id SERIAL PRIMARY KEY NOT NULL,
         office_name VARCHAR(250) NOT NULL,
         logo VARCHAR(250) NOT NULL,
@@ -13,4 +13,4 @@ offices = """CREATE TABLE IF NOT EXISTS table_offices(
 
 
 if __name__=="__main__":
-    cur.execute(offices)
+    cur.execute(table_offices)
