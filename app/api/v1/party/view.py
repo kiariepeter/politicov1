@@ -1,7 +1,7 @@
 from flask import request, jsonify, Blueprint, make_response
 from app.api.v1.party.model import Party, parties
 
-party_Blueprint = Blueprint('party', __name__)
+party_Blueprint = Blueprint('parties', __name__)
 
 
 @party_Blueprint.route('/parties')

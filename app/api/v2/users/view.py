@@ -1,75 +1,45 @@
 from flask import request, jsonify, Blueprint, make_response
 from wtforms import Form, BooleanField, StringField, PasswordField, validators
 from app.api.v2.users.Usermodel import User, users
-import jwt
-from functools import wraps
-import datetime
-import json
+from config import tokenizer
 from custom_validator import My_validator as validate
 
-MY_APIKEY = 'hj5499GFWDRWw988ek<MKL(IEI$NMR'
+
 user_blueprint = Blueprint('users', __name__)
 
 
-def tokenizer(f):
-	@wraps(f)
-	def my_wrapper(*args, **kwargs):
-
-		if 'x-access-token' in request.headers:
-			token = request.headers['x-access-token']
-		if not token:
-			return make_response(jsonify({'status':404, 'message':'token is missing'}), 404)
-		try:
-			data = jwt.decode(token, MY_APIKEY)
-		except Exception as e:
-			return make_response(jsonify({'status':400, 'message':'invalid token passed'}),400)
-
-		return f(*args, **kwargs)
-	return my_wrapper
-
-
-
-
-@user_blueprint.route('/users',methods = ['POST'])
+@user_blueprint.route('/auth/signup',methods = ['POST'])
 def add_user():
 	"""Given that am a new user i should be able to register"""
 	errors = []
 	try:
-		if not request.get_json():
-			error.append(make_response(jsonify({'status':404 , 'message':'missing input'}),404))
+		if not request.get_json():error.append(make_response(jsonify({'status':404 , 'message':'missing input'}),404))
 		post_data = request.get_json()
-		check_missingfields= validate.missing_value_validator(['name','phone','email','photo','password','national_id'],post_data)
-		if  check_missingfields !=True:errors.append(check_missingfields)
-		check_emptyfield = validate.empty_string_validator(['name','phone','email','photo','password'],post_data)
+		check_missingfields= validate.missing_value_validator(['firstname','lastname','othername','email','phoneNumber','passportUrl','password'],post_data)
+		if  check_missingfields !=True:return check_missingfields
+		check_emptyfield = validate.empty_string_validator(['firstname','lastname','othername','email','phoneNumber','passportUrl','password'],post_data)
 		if check_emptyfield !=True:errors.append(check_emptyfield)
-		name =  post_data['name']
-		phone =  post_data['phone']
-		email =  post_data['email']
-		photo =  post_data['photo']
+		firstname =  post_data['firstname']
+		lastname =  post_data['lastname']
+		othername =  post_data['othername']
+		phoneNumber =  post_data['phoneNumber']
+		passportUrl = post_data['passportUrl']
+		email = post_data['email']
 		password = post_data['password']
-		national_id = post_data['national_id']
-		check_if_integer = validate.is_integer_validator(['national_id'],post_data)
-		if check_if_integer !=True:errors.append(check_if_integer)
-		check_if_validurl = validate.is_valid_url(photo)
+		check_if_validurl = validate.is_valid_url(passportUrl)
 		if check_if_validurl !=True:errors.append(check_if_validurl)
 		check_if_valid_email = validate.is_validEmail(email)
 		if check_if_valid_email !=True:errors.append(check_if_valid_email)
-		check_if_text_only = validate.is_text_only(name)
+		check_if_text_only = validate.text_arrayvalidator(['firstname','lastname','othername'],post_data)
 		if check_if_text_only !=True:errors.append(check_if_text_only)
-		for x in users.values():
-			if x['email'] == email and x['national_id'] == national_id:
-				 error.append(make_response(jsonify({'status':203,"message":"user with the same details already exists"}),203))
 		if len(errors) > 0:
 			for e in errors:
 				return e
 		user = User()
-		res = user.create_user([name,email,phone,photo,password,national_id])
+		res = user.create_user([firstname,lastname,othername,phoneNumber,passportUrl,email,password])
 		return res
 	except KeyError as e:
 		return make_response(jsonify({'status':400 ,'message':'bad request'}), 400)
-
-
-
 
 @user_blueprint.route('/users',methods = ['GET'])
 @tokenizer

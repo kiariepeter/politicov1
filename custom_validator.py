@@ -53,6 +53,13 @@ class My_validator(object):
 			return make_response(jsonify({"status":409,"message": word+" should contain letters only "}), 409)
 		return True
 	@staticmethod
+	def text_arrayvalidator(input_data,post_data):
+		"""checks text input fields contains text letters only"""
+		for x in input_data:
+			if not post_data[x].isalpha():
+				return make_response(jsonify({"status":409, "message": post_data[x]+" should contain letters only"}))
+		return True
+	@staticmethod
 	def is_numbers(number):
 		"""This method validates numbers submitted should only contain numbers"""
 		if  number.isdigit():

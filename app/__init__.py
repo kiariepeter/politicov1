@@ -4,6 +4,10 @@ from flask import Flask
 from app.api.v1.party.view import party_Blueprint
 from app.api.v1.office.view import office_Blueprint
 from app.api.v2.users.view import user_blueprint
+from app.api.v2.office.view import office_blueprint
+from app.api.v2.party.view import party_blueprint
+from app.api.v2.candidates.view import candidate_blueprint
+from app.api.v2.votes.view import votes_blueprint
 
 
 def create_app():
@@ -19,7 +23,13 @@ def create_app():
     # register party blueprint
     app.register_blueprint(party_Blueprint, url_prefix=version1)
     app.register_blueprint(office_Blueprint, url_prefix=version1)
+    #v2
     app.register_blueprint(user_blueprint,url_prefix=version2)
+    app.register_blueprint(office_blueprint, url_prefix=version2)
+    app.register_blueprint(party_blueprint, url_prefix=version2)
+    app.register_blueprint(candidate_blueprint, url_prefix=version2)
+    app.register_blueprint(votes_blueprint, url_prefix=version2)
+
 
     return app
 

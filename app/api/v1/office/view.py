@@ -1,7 +1,7 @@
 from flask import request, jsonify, Blueprint, make_response
 from app.api.v1.office.model import Office, offices
 
-office_Blueprint = Blueprint('office', __name__)
+office_Blueprint = Blueprint('offices', __name__)
 
 
 @office_Blueprint.route('/offices')

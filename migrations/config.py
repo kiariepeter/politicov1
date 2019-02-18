@@ -5,7 +5,7 @@ def connect():
     try:
     	conn = None
     	#parsing the required database connection inputs
-    	conn = psycopg2.connect(host='localhost', database='ch2', user='root', password='root')
+    	conn = psycopg2.connect(host='localhost', database='politico', user='root', password='root')
     	conn.autocommit = True
     except Exception as e:
     	print(e)

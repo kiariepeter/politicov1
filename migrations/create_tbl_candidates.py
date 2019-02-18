@@ -4,16 +4,14 @@ cur = conn.cursor()
 
 
 tbl_candidates = """CREATE TABLE IF NOT EXISTS tbl_candidates(
-        id SERIAL PRIMARY KEY NOT NULL,
-        party_id INTEGER NOT NULL DEFAULT 0,
-        office_id INTEGER NOT NULL DEFAULT 0,
-        candidate_id INTEGER NOT NULL DEFAULT 0,
-        status INTEGER NOT NULL DEFAULT 1,
-        createdOn  TIMESTAMP WITHOUT TIME ZONE \
-        DEFAULT (NOW() AT TIME ZONE 'utc'),
-        FOREIGN KEY (party_id) REFERENCES tbl_parties(id) ON DELETE CASCADE,
-        FOREIGN KEY (office_id) REFERENCES tbl_offices(id) ON DELETE CASCADE,
-        FOREIGN KEY (candidate_id) REFERENCES tbl_users(id) ON DELETE CASCADE
+        id SERIAL  PRIMARY KEY  NOT NULL,
+        party INTEGER NOT NULL DEFAULT 0,
+        office INTEGER NOT NULL DEFAULT 0,
+        candidate INTEGER NOT NULL DEFAULT 0,
+        UNIQUE(candidate),
+        FOREIGN KEY (party) REFERENCES tbl_parties(id) ON DELETE CASCADE,
+        FOREIGN KEY (office) REFERENCES tbl_offices(id) ON DELETE CASCADE,
+        FOREIGN KEY (candidate) REFERENCES tbl_users(id) ON DELETE CASCADE
     )"""
 
 

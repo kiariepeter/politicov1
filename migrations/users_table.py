@@ -5,16 +5,15 @@ cur = conn.cursor()
 
 table_users = """CREATE TABLE IF NOT EXISTS tbl_users(
         id SERIAL PRIMARY KEY NOT NULL,
-        name VARCHAR(250) NOT NULL,
-        phone VARCHAR(250) NOT NULL,
-        photo VARCHAR(250) NOT NULL,
-        national_id INTEGER NOT NULL,
+        firstname VARCHAR(250) NOT NULL,
+        lastname VARCHAR(250) NOT NULL,
+        othername VARCHAR(250) NULL,
         email VARCHAR(250) NOT NULL,
+        phoneNumber VARCHAR(250) NULL,
         password VARCHAR(250) NOT NULL,
-        user_type INTEGER NOT NULL DEFAULT 1,
-        status INTEGER NOT NULL DEFAULT 1,
-        UNIQUE(email),
-        UNIQUE(national_id)
+        passportUrl VARCHAR(250) NULL,
+        admin BOOLEAN NOT NULL DEFAULT FALSE,
+        UNIQUE(email)
     )"""
 
 
