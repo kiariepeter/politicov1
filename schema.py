@@ -6,15 +6,10 @@ conn.autocommit = True
 cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
 
 
-
 def start_db():
 	querys = [table_users,table_offices,table_parties,tbl_candidates,table_votes]
 	for query in querys:
 		cur.execute(query)
-
-
-
-
 
 table_users = """CREATE TABLE IF NOT EXISTS tbl_users(
         id SERIAL PRIMARY KEY NOT NULL,
