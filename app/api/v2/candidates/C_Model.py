@@ -33,7 +33,6 @@ class Candidate(object):
             size =len(row)
             if size > 0:
                 return make_response(jsonify({'status':409, 'message': 'candidate already registered'}),409)
-
             cur.execute("INSERT INTO tbl_candidates(party,office,candidate) VALUES(%s ,%s ,%s)", (party,office,candidate))
             return make_response(jsonify({'status':201,'message':'candidate added successfully'}),201)
         except psycopg2.DatabaseError as e:

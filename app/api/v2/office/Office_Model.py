@@ -15,9 +15,12 @@ class Office(object):
         """This method saves Office data and adds it to the offices table"""
         try:
             cur.execute("INSERT INTO tbl_offices(name,type) VALUES(%s ,%s)",(office_name,office_type))
+            cur.execute("SELECT * FROM tbl_offices  order by id desc")
+            office_data = cur.fetchall()
             return make_response(jsonify({
             "status": 201,
-            "message": "Office added successfully"
+            "message": "Office added successfully",
+            "data":office_data
             }), 201)
 
         except (Exception, psycopg2.DatabaseError ) as e:
@@ -28,7 +31,7 @@ class Office(object):
         """querying the database to get all users"""
         cur.execute("SELECT * FROM tbl_offices  order by id desc")
         rows = cur.fetchall()
-        return make_response(jsonify({'status':201,'data':rows}),201)
+        return make_response(jsonify({'status':200,'data':rows}),200)
 
 
     def get_office(self,office_id):
@@ -37,7 +40,7 @@ class Office(object):
         row = cur.fetchall()
         size =len(row)
         if  size > 0:
-            return make_response(jsonify({'status':201, 'data': row}), 201)
+            return make_response(jsonify({'status':200, 'data': row}), 200)
         return make_response(jsonify({'status':404, 'message': 'office not found'}),404)
 
     @staticmethod
@@ -50,9 +53,9 @@ class Office(object):
             if  size > 0:
                 cur.execute("UPDATE tbl_offices set name= %s,type= %s WHERE id = %s",(office_name,office_type,str(office_id)))
                 return make_response(jsonify({
-                    "status": 201,
+                    "status": 200,
                     "message": "Office Updated successfully"
-                }), 201)
+                }), 200)
             return make_response(jsonify({'status': 404, 'message': 'office not found'}), 404)
         return make_response(jsonify({'status': 401, 'message': 'missing office id'}))
     def deleteoffice(self,office_id):
@@ -62,7 +65,7 @@ class Office(object):
         size =len(row)
         if  size > 0:
             cur.execute("DELETE  FROM  tbl_offices  WHERE id = %s",(str(office_id)))
-            return make_response(jsonify({'status':201, 'message': "office deleted successfully"}), 201)
+            return make_response(jsonify({'status':200, 'message': "office deleted successfully"}), 200)
         return make_response(jsonify({'status':404, 'message': 'office not found'}),404)
 
 

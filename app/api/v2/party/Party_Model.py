@@ -23,7 +23,7 @@ class Party(object):
         """querying the database to get all parties"""
         cur.execute("SELECT * FROM tbl_parties  order by id desc")
         rows = cur.fetchall()
-        return make_response(jsonify({'status':201,'data':rows}),201)
+        return make_response(jsonify({'status':200,'data':rows}),200)
 
     def get_party(self,party_id):
         """ This returns all offices """
@@ -31,7 +31,7 @@ class Party(object):
         row = cur.fetchall()
         size =len(row)
         if  size > 0:
-            return make_response(jsonify({'status':201, 'data': row}), 201)
+            return make_response(jsonify({'status':200, 'data': row}), 200)
         return make_response(jsonify({'status':404, 'message': 'party not found'}),404)
 
     def edit_party(self, party_id, party_data):
@@ -43,9 +43,9 @@ class Party(object):
             if  size > 0:
                 cur.execute("UPDATE tbl_parties set name= %s, hqAddress= %s, logoUrl= %s,slogan= %s WHERE id = %s",(party_data[0],party_data[1],party_data[2],party_data[3],str(party_id)))
                 return make_response(jsonify({
-                    "status": 201,
+                    "status": 200,
                     "message": "Party Updated successfully"
-                }), 201)
+                }), 200)
             return make_response(jsonify({'status': 404, 'message': 'party not found'}), 404)
         return make_response(jsonify({'status': 401, 'message': 'missing party id'}))
 
@@ -56,5 +56,5 @@ class Party(object):
         size =len(row)
         if  size > 0:
             cur.execute("DELETE  FROM  tbl_parties  WHERE id = %s",(str(party_id)))
-            return make_response(jsonify({'status':201, 'message': "Party deleted successfully"}), 201)
+            return make_response(jsonify({'status':200, 'message': "Party deleted successfully"}), 200)
         return make_response(jsonify({'status':404, 'message': 'Party not found'}),404)

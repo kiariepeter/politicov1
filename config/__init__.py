@@ -3,8 +3,9 @@ import jwt
 from functools import wraps
 import datetime
 import json
+import os
+MY_APIKEY = os.getenv('MY_APIKEY')
 
-MY_APIKEY = 'hj5499GFWDRWw988ek<MKL(IEI$NMR'
 def tokenizer(f):
 	@wraps(f)
 	def my_wrapper(*args, **kwargs):

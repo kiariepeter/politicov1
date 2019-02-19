@@ -12,6 +12,7 @@ user_blueprint = Blueprint('users', __name__)
 def add_user():
 	"""Given that am a new user i should be able to register"""
 	errors = []
+
 	try:
 		if not request.get_json():error.append(make_response(jsonify({'status':404 , 'message':'missing input'}),404))
 		post_data = request.get_json()
@@ -42,7 +43,7 @@ def add_user():
 		return make_response(jsonify({'status':400 ,'message':'bad request'}), 400)
 
 @user_blueprint.route('/users',methods = ['GET'])
-@tokenizer
+# @tokenizer
 def get_all_users():
 	"""Given that i am an admin i should view all registered users"""
 	user = User()
@@ -52,7 +53,7 @@ def get_all_users():
 	return make_response(jsonify({'status':404,'message':'no users found'}),404)
 
 @user_blueprint.route('/users/<int:user_id>',methods = ['GET'])
-@tokenizer
+# @tokenizer
 def get_user(user_id):
 	"""Given that i am an admin i should be able to view a specific user details"""
 	user = User()
@@ -64,7 +65,7 @@ def get_user(user_id):
 	return make_response(jsonify({'status':404, 'message':'user not found'}),404)
 
 @user_blueprint.route('/users/<int:user_id>',methods =['PATCH'])
-@tokenizer
+# @tokenizer
 def update_user(user_id):
 	"""Given that i am an admin i should update specific user details """
 	errors = []
@@ -73,37 +74,40 @@ def update_user(user_id):
 		if not request.get_json():
 			return make_response(jsonify({'status':400,'message': 'Post data missing'}),400)
 		post_data = request.get_json()
-		name =  post_data['name']
-		phone =  post_data['phone']
-		email =  post_data['email']
-		photo =  post_data['photo']
-		password = post_data['password']
-		national_id = post_data['national_id']
-		check_missingfields= validate.missing_value_validator(['name','phone','email','photo','password','national_id'],post_data)
-		if  check_missingfields !=True:errors.append(check_missingfields)
-		check_emptyfield = validate.empty_string_validator(['name','phone','email','photo','password'],post_data)
+		post_data = request.get_json()
+		check_missingfields= validate.missing_value_validator(['firstname','lastname','othername','email','phoneNumber','passportUrl','password'],post_data)
+		if  check_missingfields !=True:return check_missingfields
+		check_emptyfield = validate.empty_string_validator(['firstname','lastname','othername','email','phoneNumber','passportUrl','password'],post_data)
 		if check_emptyfield !=True:errors.append(check_emptyfield)
-		check_if_integer = validate.is_integer_validator(['national_id'],post_data)
-		if check_if_integer !=True:errors.append(check_if_integer)
-		check_if_validurl = validate.is_valid_url(photo)
+		firstname =  post_data['firstname']
+		lastname =  post_data['lastname']
+		othername =  post_data['othername']
+		phoneNumber =  post_data['phoneNumber']
+		passportUrl = post_data['passportUrl']
+		email = post_data['email']
+		password = post_data['password']
+		check_if_validurl = validate.is_valid_url(passportUrl)
 		if check_if_validurl !=True:errors.append(check_if_validurl)
 		check_if_valid_email = validate.is_validEmail(email)
 		if check_if_valid_email !=True:errors.append(check_if_valid_email)
-		check_if_text_only = validate.is_text_only(name)
+		check_if_text_only = validate.text_arrayvalidator(['firstname','lastname','othername'],post_data)
 		if check_if_text_only !=True:errors.append(check_if_text_only)
+
 		new_user = {}
-		new_user['name'] =  name
-		new_user['phone'] =  phone
+		new_user['firstname'] =  firstname
+		new_user['lastname'] =  lastname
+		new_user['othername'] =  othername
+		new_user['phoneNumber'] =  phoneNumber
+		new_user['passportUrl'] =  passportUrl
 		new_user['email'] =  email
-		new_user['photo'] =  photo
-		new_user['national_id'] =  national_id
+		new_user['password'] =  password
 		if len(errors) > 0:
 			for e in errors:return e
 		res = user.update_user(user_id,new_user)
 		return res
 
 @user_blueprint.route('/users/<int:user_id>',methods = ['DELETE'])
-@tokenizer
+# @tokenizer
 def delete_user(user_id):
 	"""Given that i am an admin i should be able to delete a specific user"""
 	if user_id:

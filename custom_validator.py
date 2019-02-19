@@ -57,7 +57,7 @@ class My_validator(object):
 		"""checks text input fields contains text letters only"""
 		for x in input_data:
 			if not post_data[x].isalpha():
-				return make_response(jsonify({"status":409, "message": post_data[x]+" should contain letters only"}))
+				return make_response(jsonify({"status":409, "message": post_data[x]+" should contain letters only"}),409)
 		return True
 	@staticmethod
 	def is_numbers(number):
