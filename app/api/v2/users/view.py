@@ -17,7 +17,6 @@ def validations(input_data, post_data):
 def add_user():
     """Given that am a new user i should be able to register"""
     errors: List[Union[bool, Any]] = []
-
     try:
         if not request.get_json():
             errors.append(
