@@ -1,0 +1,298 @@
+<table border="1">
+<tr>
+<th>Endpoint</th>
+<th>Description</th>
+<th>Input</th>
+<th>Out put</th>
+</tr>
+
+<tr>
+<td> POST  /api/v2/users    </td>
+<td>CREATE user   </td>
+<td>{
+"name":"PETER KIARIE",
+"phone":"0720068822",
+"photo":"http://www.politioc.com/photo.jpg",
+"email":"kiarie2peter4@gmail.com1",
+"national_id":"124",
+"password":"1234"
+}</td>
+<td>{
+"message": "user added successfully",
+"status": 201,
+"users": {
+"2": {
+"email": "kiarie2peter4@gmail.com",
+"name": "PETER KIARIE",
+"password": "1234",
+"phone": "0720068822",
+"photo": "http://www.politioc.com/photo.jpg",
+"status": 1,
+"user_id": 2,
+"user_type": 2
+}
+}
+}</td>
+</tr>
+
+
+
+<tr>
+<td> GET  /api/v2/users    </td>
+<td>GET users   </td>
+<td>https://politicov1peterkiarie.herokuapp.com/api/v2/users</td>
+<td>{
+"status": 201,
+"users": {
+"1": {
+"email": "kiarie2peter@gmail.com1",
+"name": "odiek",
+"password": "1234",
+"phone": "0720068822",
+"photo": "http://www.politioc.com/photo.jpg",
+"status": 1,
+"user_id": 1,
+"user_type": 2
+}
+}
+}</td>
+</tr>
+
+
+
+
+<tr>
+<td> GET  /api/v2/users/<int:user_id>    </td>
+<td>GET a specific user   </td>
+<td>https://politicov1peterkiarie.herokuapp.com/api/v2/users/1</td>
+<td>{
+"status": 201,
+"user": {
+"email": "kiarie2peter4@gmail.com",
+"name": "PETER KIARIE",
+"password": "1234",
+"phone": "0720068822",
+"photo": "http://www.politioc.com/photo.jpg",
+"status": 1,
+"user_id": 2,
+"user_type": 2
+}
+}</td>
+</tr>
+
+<tr>
+<td> UPDATE  /api/v2/users/<int:user_id>    </td>
+<td>UPDATE a specific user   </td>
+<td>{
+"name":"PETER KIARIE",
+"phone":"0720068822",
+"photo":"http://www.politioc.com/photo.jpg",
+"email":"kiarie2peter4@gmail.com",
+"national_id":"124",
+"password":"1234"
+}</td>
+<td>{
+"status": 201,
+"users": {
+"1": {
+"email": "kiarie2peter4@gmail.com",
+"name": "PETER KIARIE",
+"password": "1234",
+"phone": "0720068822",
+"photo": "http://www.politioc.com/photo.jpg",
+"status": 1,
+"user_id": 1,
+"user_type": 2
+}
+}
+}</td>
+</tr>
+
+
+<tr>
+<td> POST  /api/v2/login  </td>
+<td>https://politicov1peterkiarie.herokuapp.com/api/v2/login </td>
+<td>{
+"email":"kiarie2peter4@gmail.com",
+"password":"1234"
+}</td>
+<td>{
+"message": "logged in successfully",
+"status": 201
+}</td>
+</tr>
+
+
+<tr>
+<td> DELETE  /api/v2/users/<int:user_id>    </td>
+<td>DELETE a specific user   </td>
+<td>https://politicov1peterkiarie.herokuapp.com/api/v2/users/1</td>
+<td>{
+"message": "user deleted successfully",
+"status": 201,
+"users": {}
+}</td>
+</tr>
+
+
+
+
+
+
+
+
+
+
+
+
+<tr>
+<td> POST  /api/v1/parties    </td>
+<td>CREATE political party   </td>
+<td>{
+"party_name": "party fdgd2221g",
+"logo":"http://www.politico.com/logo.jpg",
+"members":12
+}</td>
+<td>{
+"message": "Party added successfully",
+"parties": {
+"1": {
+"logo": "http://www.politico.com/logo.jpg",
+"members": 12,
+"party_id": 1,
+"party_name": "party fdgd2221g"
+}
+},
+"status": 201
+}</td>
+</tr>
+<tr>
+<td> GET  /api/v1/parties   </td>
+<td> GET ALL political parties  </td>
+<td></td>
+<td>{
+"1": {
+"logo": "http://www.politico.com/logo.jpg",
+"members": 12,
+"party_id": 1,
+"party_name": "party fdgd2221g"
+}
+}</td>
+</tr>
+<tr>
+<td> GET  /api/v1/parties/<int:party_id></td>
+<td> GET ONE political party  </td>
+<td></td>
+<td>{
+"party": {
+"logo": "http://www.politico.com/logo.jpg",
+"members": 12,
+"party_id": 1,
+"party_name": "party fdgd2221g"
+},
+"status": 201
+}</td>
+</tr>
+<tr>
+<td> DELETE  /api/v1/parties   </td>
+<td> DELETE ONE political party </td>
+<td></td>
+<td>{
+"Message": "Party deleted deleted successfully",
+"parties": {},
+"status": "OK"
+}</td>
+</tr>
+<tr>
+<td> PATCH  /api/v1/parties/<int:party_id>   </td>
+<td> UPDATE ONE political party</td>
+<td>{
+"party_name": "party testupdated",
+"logo":"http://www.politico.com/logo.jpg",
+"members":12
+}</td>
+<td>{
+"message": "Party Updated successfully",
+"new details": {
+"1": {
+"logo": "http://www.politico.com/logo.jpg",
+"members": 12,
+"party_id": 1,
+"party_name": "party fdgd2221g"
+}
+},
+"status": 201
+}</td>
+</tr>
+<tr>
+<td> POST  /api/v1/offices </td>
+<td> CREATE government office  </td>
+<td>{
+"office_name":"governor",
+"logo":"http://www.politoco.com/logo.jpg"
+}</td>
+<td>{
+"message": "Office added successfully",
+"offices": {
+"1": {
+"logo": "http://www.politoco.com/logo.jpg",
+"office_id": 1,
+"office_name": "governor"
+}
+},
+"status": 201
+}</td>
+</tr>
+<tr>
+<td> GET  /api/v1/offices/<int:office_id>  </td>
+<td>GET ONE government office </td>
+<td></td>
+<td>{
+"1": {
+"logo": "http://www.politoco.com/logo.jpg",
+"office_id": 1,
+"office_name": "governor"
+}
+}</td>
+</tr>
+<tr>
+<td> GET  /api/v1/offices  </td>
+<td> GET ALL government offices</td>
+<td></td>
+<td>{
+"1": {
+"logo": "http://www.politoco.com/logo.jpg",
+"office_id": 1,
+"office_name": "governor"
+}
+}</td>
+</tr>
+<tr>
+<tr>
+<td> PATCH  /api/v1/offices  </td>
+<td> UPDATE a specific government offices</td>
+<td>{
+"office_name":"governor",
+"logo":"http://www.politoco.com/logo.jpg"
+}</td>
+<td>{
+"message": "Office Updated successfully",
+"new details": {
+"logo": "http://www.politoco.com/logo.jpg",
+"office_id": 1,
+"office_name": "governor"
+},
+"status": 201
+}</td>
+</tr>
+<tr>
+<td> DELETE  /api/v1/offices/<int:office_id>  </td>
+<td> DELETE a specific government office  </td>
+<td></td>
+<td>{
+"Message": "Office deleted  successfully",
+"offices": {},
+"status": 201
+}</td>
+</tr>
+</table>

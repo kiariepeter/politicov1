@@ -1,0 +1,26 @@
+language : python
+python:
+    - "3.6"
+
+install:
+  - pip install -r requirements.txt
+
+env:
+  - FLASK_VERSION=1.0.2
+
+services:
+  - postgresql
+
+before_script:
+  - psql -c "CREATE DATABASE politico;" -U postgres
+  - psql -c "CREATE DATABASE politico_test;" -U postgres
+  - psql -c "CREATE USER root WITH PASSWORD 'root';" -U postgres
+
+env:
+  - DATABASE_URL="dbname='politico' host='127.0.0.1' port='5432' user='root' password='root'" DATABASE_TEST_URL="dbname='politico' host='127.0.0.1' port='5432' user='root' password='root'"
+
+script:
+  - pytest app/tests/api/v2/ --cov=app/api/v2
+
+after_script:
+  - coveralls
