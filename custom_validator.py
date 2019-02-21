@@ -1,5 +1,5 @@
 import validators
-import json
+import re
 from flask import Flask, make_response,jsonify
 class My_validator(object):
 
@@ -42,6 +42,8 @@ class My_validator(object):
 	@staticmethod
 	def is_validEmail(email):
 		"""This checks if the submitted email is valid"""
+		if not email[0].isalpha():
+			return make_response(jsonify({"status": 409, "message": "Not a valid email start with a letter" + email}), 409)
 		if not validators.email(email):
 			return make_response(jsonify({"status":409, "message":"Not a valid email "+email}), 409)
 		return True
@@ -65,6 +67,24 @@ class My_validator(object):
 		if  number.isdigit():
 			return True
 		return make_response(jsonify({"status":409, "message": number+ "This should contain numbers only"}), 409)
+
+	@staticmethod
+	def is_strong_password(password):
+		if len(password) < 6:
+			return make_response(jsonify({"status": 401, "message": "password should contain more than six characters"}), 401)
+		if re.search(r"\d", password) is None:
+			return make_response(
+				jsonify({"status": 401, "message": "password should contain a number"}), 401)
+		if re.search(r"[A-Z]", password) is None:
+			return make_response(jsonify({"status": 401, "message": "password should contain an Upper case letter"}), 401)
+		if re.search(r"[a-z]", password) is None:
+			return make_response(jsonify({"status": 401, "message": "password should contain an Lower case letter"}), 401)
+		if re.search(r"\W", password) is None:
+			return make_response(jsonify({"status": 401, "message": "password should contain a special character"}), 401)
+		return True
+
+
+
 		
 
 

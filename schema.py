@@ -1,19 +1,22 @@
-import os 
-import psycopg2 
+import os
+import psycopg2
+
 DATABASE_URL = os.getenv('DATABASE_URL')
+admin = os.getenv('ADMIN')
+CHECK_ADMIN = os.getenv('CHECK_ADMIN')
 conn = psycopg2.connect(DATABASE_URL)
 conn.autocommit = True
-cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
-
+cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
 
 def start_db() -> object:
-	querys = [table_users,table_offices,table_parties,tbl_candidates,table_votes]
-	for query in querys:
-		cur.execute(query)
-
-
-
+    querys = [table_users, table_offices, table_parties, tbl_candidates, table_votes]
+    for query in querys:
+        cur.execute(query)
+    cur.execute(CHECK_ADMIN)
+    data = cur.fetchall()
+    if data is None:
+        cur.execute(admin)
 
 
 table_users = """CREATE TABLE IF NOT EXISTS tbl_users(
@@ -28,7 +31,6 @@ table_users = """CREATE TABLE IF NOT EXISTS tbl_users(
         admin BOOLEAN NOT NULL DEFAULT FALSE,
         UNIQUE(email)
     )"""
-
 
 table_offices = """CREATE TABLE IF NOT EXISTS tbl_offices(
         id SERIAL PRIMARY KEY NOT NULL,
@@ -70,8 +72,4 @@ table_votes = """CREATE TABLE IF NOT EXISTS tbl_votes(
         FOREIGN KEY (candidate) REFERENCES tbl_candidates(id) ON DELETE CASCADE
     )"""
 
-
 start_db()
-
-
-

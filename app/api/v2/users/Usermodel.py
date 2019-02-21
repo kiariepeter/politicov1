@@ -56,7 +56,8 @@ class User(object):
         session["username"] = "admin"
         res = str(session.items())
         """This method validates user credentials"""
-        cur.execute("SELECT firstname,lastname,othername,PhoneNumber,passportUrl FROM tbl_users where  email = %s and password = %s", (email, password))
+        cur.execute("SELECT admin, firstname,lastname,othername,PhoneNumber,passportUrl FROM tbl_users where  email = %s and "
+                    "password = %s", (email, password))
         row = cur.fetchall()
         size = len(row)
         if size > 0:
@@ -73,7 +74,8 @@ class User(object):
         size = len(row)
         if size > 0:
             cur.execute(
-                "UPDATE tbl_users set firstname = %s,lastname= %s,othername = %s,phoneNumber= %s, passportUrl= %s,email= %s  WHERE id = %s",
+                "UPDATE tbl_users set firstname = %s,lastname= %s,othername = %s,phoneNumber= %s, passportUrl= %s,"
+                "email= %s  WHERE id = %s",
                 (user_data['firstname'], user_data['lastname'], user_data['othername'], user_data['phoneNumber'],
                  user_data['passportUrl'], user_data['email'], str(user_id)))
             return make_response(jsonify({'status': 200, 'message': "user updated successfully","data":row}), 200)

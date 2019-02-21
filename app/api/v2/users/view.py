@@ -1,9 +1,9 @@
 from typing import Any, Union, List
 
-from flask import request, jsonify, Blueprint, make_response
+from flask import request, jsonify, Blueprint, make_response,session
 
 from app.api.v2.users.Usermodel import User, users
-from config import tokenizer
+from config import tokenizer, is_admin
 from custom_validator import My_validator as validate
 
 user_blueprint = Blueprint('users', __name__)
@@ -43,6 +43,8 @@ def add_user():
         check_if_text_only: Union[bool, Any] = validate.text_arrayvalidator(['firstname', 'lastname', 'othername'],
                                                                             post_data)
         if check_if_text_only is not True: errors.append(check_if_text_only)
+        is_strong_password = validate.is_strong_password(password)
+        if is_strong_password is not True: errors.append(is_strong_password)
         if len(errors) > 0:
             for e in errors:
                 return e
@@ -57,11 +59,12 @@ def add_user():
 @tokenizer
 def get_all_users():
     """Given that i am an admin i should view all registered users"""
-
+    if is_admin() is not True:
+        return is_admin()
     user = User()
     all_users = user.get_users()
     if all_users:
-        return make_response(all_users, 201)
+        return make_response(all_users, 200)
     return make_response(jsonify({'status': 404, 'message': 'no users found'}), 404)
 
 
@@ -69,6 +72,8 @@ def get_all_users():
 @tokenizer
 def get_user(user_id):
     """Given that i am an admin i should be able to view a specific user details"""
+    if is_admin() is not True:
+        return is_admin()
     user = User()
     res = user.get_userByid(user_id)
     return res
@@ -78,6 +83,8 @@ def get_user(user_id):
 @tokenizer
 def update_user(user_id):
     """Given that i am an admin i should update specific user details """
+    if is_admin() is not True:
+        return is_admin()
     errors = []
     try:
         if not request.get_json():
@@ -104,6 +111,8 @@ def update_user(user_id):
         check_if_text_only: Union[bool, Any] = validate.text_arrayvalidator(['firstname', 'lastname', 'othername'],
                                                                             post_data)
         if check_if_text_only is not True: errors.append(check_if_text_only)
+
+
         if len(errors) > 0:
             for e in errors:
                 return e
@@ -126,6 +135,8 @@ def update_user(user_id):
 @tokenizer
 def delete_user(user_id):
     """Given that i am an admin i should be able to delete a specific user"""
+    if is_admin() is not True:
+        return is_admin()
     user = User()
     res: object = user.delete_user(user_id)
     return res

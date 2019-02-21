@@ -56,7 +56,7 @@ class Votes(object):
             size = len(row)
             if not size > 0:
                 return make_response(jsonify({'status': 404, 'message': 'invalid office'}), 404)
-            cur.execute("SELECT * FROM tbl_candidates WHERE office= %s" % office_id)
+            cur.execute("SELECT * FROM tbl_candidates JOIN tbl_users ON tbl_candidates.candidate=tbl_users.id WHERE office= %s" % office_id)
             candidates = cur.fetchall()
             size = len(candidates)
             main_votes = []
@@ -64,10 +64,10 @@ class Votes(object):
                 for candidate in candidates:
                     cur.execute("SELECT candidate , COUNT(*) as votes from tbl_votes where candidate = %s group by candidate" % candidate["candidate"])
                     votes = cur.fetchall()
-                    main_votes.append({"candidate":candidate["candidate"], "votes":2})
+                    main_votes.append({"candidate":candidate["firstname"], "votes": len(votes)})
 
-                return make_response(jsonify({'status': 200, 'data': main_votes}), 200)
-            return make_response(jsonify({'status': 409, 'message': 'No available candidates for '+str(row[0]["name"])+' office'}), 409)
+                return make_response(jsonify({'status': 200, 'data': main_votes,"Votes for ": str(row[0]["name"])}), 200)
+            return make_response(jsonify({'status': 404, 'message': 'No available candidates for '+str(row[0]["name"])+' office'}), 404)
         except psycopg2.DatabaseError as e:
             err = str(e.args[0])
             splited = err.split(": ")

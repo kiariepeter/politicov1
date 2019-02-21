@@ -1,6 +1,6 @@
 from flask import request, jsonify, Blueprint, make_response
 from app.api.v2.office.Office_Model import Office, offices
-from config import tokenizer
+from config import tokenizer, is_admin
 from custom_validator import My_validator as validate
 office = Office()
 office_blueprint = Blueprint('office', __name__)
@@ -22,6 +22,8 @@ def get_offices():
 def add_office():
     """Given that i am an admin i should be able to add a political office
        When i visit ../api/v2/offices endpoint using POST method"""
+    if is_admin() is not True:
+        return is_admin()
     errors = []
     try:
         if not request.get_json():errors.append(make_response(jsonify({'status': 409, "message": "missing input data"}), 409))
@@ -52,6 +54,8 @@ def add_office():
 def get_office(office_id):
     """Given that i am an admin i should be able to get a specific l political office
        When i append party_id to .../api/v2/offices endpoint using GET method"""
+    if is_admin() is not True:
+        return is_admin()
     res = office.get_office(office_id)
     return res
 
@@ -62,8 +66,8 @@ def get_office(office_id):
 def update_office(office_id):
     """Given that i am an admin i should be able to edit a specific political office
        When i visit to .../api/v2/offices endpoint using PATCH method"""
-
-
+    if is_admin() is not True:
+        return is_admin()
     if not request.get_json():
         return make_response(jsonify({'status': 401, 'message': 'empty body'}, 401))
     office_data = request.get_json()
@@ -88,6 +92,8 @@ def update_office(office_id):
 def delete_office(office_id):
     """Given that i am an admin i should be able to delete a specific political office
        When i append party_id to .../api/v2/offices endpoint using DELETE method"""
+    if is_admin() is not True:
+        return is_admin()
     res = office.deleteoffice(office_id)
     return res
 

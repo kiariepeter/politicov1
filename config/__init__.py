@@ -21,4 +21,13 @@ def tokenizer(f):
 		return f(*args, **kwargs)
 	return my_wrapper
 
+def is_admin():
+	token = request.headers['x-access-token']
+	data = jwt.decode(token, MY_APIKEY)
+	if data["user"]["admin"] is not True:
+		return make_response(jsonify({'status': 403, 'message': 'forbidden access is denied'}), 403)
+	return True
+
+
+
 

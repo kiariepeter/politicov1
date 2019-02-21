@@ -15,6 +15,7 @@ def index():
     response = urllib.request.urlopen(request)
     start_db()
 
+
     return (response.read().decode('utf-8'))
 
 
