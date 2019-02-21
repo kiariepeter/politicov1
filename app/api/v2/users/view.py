@@ -8,16 +8,13 @@ from custom_validator import My_validator as validate
 
 user_blueprint = Blueprint('users', __name__)
 
-
 def validations(input_data, post_data):
     return
-
 
 @user_blueprint.route('/auth/signup', methods=['POST'])
 def add_user():
     """Given that am a new user i should be able to register """
     errors: List[Union[bool, Any]] = []
-
     try:
         if not request.get_json():
             errors.append(
