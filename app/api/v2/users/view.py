@@ -61,14 +61,6 @@ def get_all_users():
     return make_response(jsonify({'status': 404, 'message': 'no users found'}), 404)
 
 
-@user_blueprint.route('/users/<int:user_id>', methods=['GET'])
-@tokenizer
-def get_user(user_id):
-    """Given that i am an admin i should be able to view a specific user details"""
-    user = User()
-    res = user.get_userByid(user_id)
-    return res
-
 
 @user_blueprint.route('/users/<int:user_id>', methods=['PATCH'])
 @tokenizer
@@ -117,6 +109,14 @@ def update_user(user_id):
     except KeyError as e:
         return make_response(jsonify({'status': 400, 'message': 'bad request'}), 400)
 
+
+@user_blueprint.route('/users/<int:user_id>', methods=['GET'])
+@tokenizer
+def get_user(user_id):
+    """Given that i am an admin i should be able to view a specific user details"""
+    user = User()
+    res = user.get_userByid(user_id)
+    return res
 
 @user_blueprint.route('/users/<int:user_id>', methods=['DELETE'])
 @tokenizer

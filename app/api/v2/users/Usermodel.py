@@ -24,9 +24,11 @@ class User(object):
                 "INSERT INTO tbl_users(firstname,lastname,othername,phoneNumber,"
                 "passportUrl,email,password) VALUES(%s ,%s ,%s, %s, %s, %s, %s)",
                 (users[0], users[1], users[2], users[3], users[4], users[5], users[6]))
-            cur.execute("SELECT * FROM tbl_users  order by id desc")
+            cur.execute("SELECT * FROM tbl_users  order by id desc limit 1")
             users = cur.fetchall()
-            return make_response(jsonify({'status': 201, 'message': 'user added successfully', 'data': users}), 201)
+            token = jwt.encode({'user':users[0], 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=5)},
+                               MY_APIKEY)
+            return make_response(jsonify({'status': 201,'message': 'user added successfully', 'data': users}), 201)
         except psycopg2.DatabaseError as e:
             err = str(e.args[0])
             splited = err.split(": ")
