@@ -14,7 +14,9 @@ Politicov1 involves endpoints to add,edit,delete and update political parties an
 
 5) Install the requirements : `pip install -r requirements.txt`
 
+6) Create a politico database
 
+7) Add .env and add  DATABASE_URL=postgresql://root:root@localhost/politico
 
 
 ### Prerequisites
