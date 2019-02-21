@@ -62,11 +62,11 @@ class Votes(object):
             main_votes = []
             if size > 0:
                 for candidate in candidates:
-                    cur.execute("SELECT candidate , COUNT(*) as votes from tbl_votes where candidate = %s group by candidate" % candidate["candidate"])
+                    cur.execute("SELECT candidate , COUNT(*) as votes "
+                                "from tbl_votes where candidate = %s group by candidate" % candidate["candidate"])
                     votes = cur.fetchall()
-                    main_votes.append({"candidate":candidate["candidate"], "votes":2})
-
-                return make_response(jsonify({'status': 200, 'data': main_votes}), 200)
+                    main_votes.append({"candidate":candidate["candidate"], "votes":len(votes)})
+                return make_response(jsonify({'status': 200,"Votes for ":row[0]["name"], 'data': main_votes}), 200)
             return make_response(jsonify({'status': 409, 'message': 'No available candidates for '+str(row[0]["name"])+' office'}), 409)
         except psycopg2.DatabaseError as e:
             err = str(e.args[0])
