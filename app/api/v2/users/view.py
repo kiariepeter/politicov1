@@ -15,7 +15,7 @@ def validations(input_data, post_data):
 
 @user_blueprint.route('/auth/signup', methods=['POST'])
 def add_user():
-    """Given that am a new user i should be able to register"""
+    """Given that am a new user i should be able to register """
     errors: List[Union[bool, Any]] = []
 
     try:
