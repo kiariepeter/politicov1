@@ -8,13 +8,16 @@ from custom_validator import My_validator as validate
 
 user_blueprint = Blueprint('users', __name__)
 
+
 def validations(input_data, post_data):
     return
 
+
 @user_blueprint.route('/auth/signup', methods=['POST'])
 def add_user():
-    """Given that am a new user i should be able to register in order to be able to login"""
+    """Given that am a new user i should be able to register"""
     errors: List[Union[bool, Any]] = []
+
     try:
         if not request.get_json():
             errors.append(
@@ -54,12 +57,21 @@ def add_user():
 @tokenizer
 def get_all_users():
     """Given that i am an admin i should view all registered users"""
+
     user = User()
     all_users = user.get_users()
     if all_users:
         return make_response(all_users, 201)
     return make_response(jsonify({'status': 404, 'message': 'no users found'}), 404)
 
+
+@user_blueprint.route('/users/<int:user_id>', methods=['GET'])
+@tokenizer
+def get_user(user_id):
+    """Given that i am an admin i should be able to view a specific user details"""
+    user = User()
+    res = user.get_userByid(user_id)
+    return res
 
 
 @user_blueprint.route('/users/<int:user_id>', methods=['PATCH'])
@@ -109,14 +121,6 @@ def update_user(user_id):
     except KeyError as e:
         return make_response(jsonify({'status': 400, 'message': 'bad request'}), 400)
 
-
-@user_blueprint.route('/users/<int:user_id>', methods=['GET'])
-@tokenizer
-def get_user(user_id):
-    """Given that i am an admin i should be able to view a specific user details"""
-    user = User()
-    res = user.get_userByid(user_id)
-    return res
 
 @user_blueprint.route('/users/<int:user_id>', methods=['DELETE'])
 @tokenizer

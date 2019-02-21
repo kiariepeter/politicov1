@@ -24,11 +24,13 @@ class User(object):
                 "INSERT INTO tbl_users(firstname,lastname,othername,phoneNumber,"
                 "passportUrl,email,password) VALUES(%s ,%s ,%s, %s, %s, %s, %s)",
                 (users[0], users[1], users[2], users[3], users[4], users[5], users[6]))
+            user_object = dict(firstname=users[0], lastname=users[1], othername=users[2], phone=users[3],
+                               passportUrl=users[4], email=users[5])
             cur.execute("SELECT * FROM tbl_users  order by id desc limit 1")
             users = cur.fetchall()
             token = jwt.encode({'user':users[0], 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=5)},
                                MY_APIKEY)
-            return make_response(jsonify({'status': 201,'message': 'user added successfully', 'data': users}), 201)
+            return make_response(jsonify({'status': 201,'message': 'user added successfully', 'data': user_object}), 201)
         except psycopg2.DatabaseError as e:
             err = str(e.args[0])
             splited = err.split(": ")
@@ -36,13 +38,13 @@ class User(object):
 
     def get_users(self):
         """querying the database to get all users"""
-        cur.execute("SELECT * FROM tbl_users  order by id desc")
+        cur.execute("SELECT firstname,lastname,othername,PhoneNumber,passportUrl FROM tbl_users  order by id desc")
         rows = cur.fetchall()
         return make_response(jsonify({'status': 200, 'data': rows}), 200)
 
     def get_userByid(self, user_id: object) -> object:
         """This method returns a specific user by id"""
-        cur.execute("SELECT * FROM tbl_users where id = %s", (user_id,))
+        cur.execute("SELECT firstname,lastname,othername,PhoneNumber,passportUrl FROM tbl_users where id = %s", (user_id,))
         row = cur.fetchall()
         size = len(row)
         if size > 0:
@@ -54,7 +56,7 @@ class User(object):
         session["username"] = "admin"
         res = str(session.items())
         """This method validates user credentials"""
-        cur.execute("SELECT * FROM tbl_users where  email = %s and password = %s", (email, password))
+        cur.execute("SELECT firstname,lastname,othername,PhoneNumber,passportUrl FROM tbl_users where  email = %s and password = %s", (email, password))
         row = cur.fetchall()
         size = len(row)
         if size > 0:
@@ -66,7 +68,7 @@ class User(object):
 
     def update_user(self, user_id, user_data):
         """This method updates specific user details"""
-        cur.execute("SELECT * FROM tbl_users where  id = %s", (user_id,))
+        cur.execute("SELECT firstname,lastname,othername,PhoneNumber,passportUrl FROM tbl_users where  id = %s", (user_id,))
         row = cur.fetchall()
         size = len(row)
         if size > 0:
