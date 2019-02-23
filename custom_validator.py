@@ -42,6 +42,10 @@ class My_validator(object):
 	@staticmethod
 	def is_validEmail(email):
 		"""This checks if the submitted email is valid"""
+		if not isinstance(email, str):
+			return make_response(jsonify({"status": 409, "message": "email can only be a string" + email}),
+								 409)
+
 		if not email[0].isalpha():
 			return make_response(jsonify({"status": 409, "message": "Not a valid email start with a letter" + email}), 409)
 		if not validators.email(email):
@@ -50,7 +54,7 @@ class My_validator(object):
 
 	@staticmethod
 	def is_text_only(word):
-		"""This method checks is word submitted conatins letters only"""
+		"""This method checks is word submitted contains letters only"""
 		if not word.isalpha():
 			return make_response(jsonify({"status":409,"message": word+" should contain letters only "}), 409)
 		return True
@@ -58,6 +62,9 @@ class My_validator(object):
 	def text_arrayvalidator(input_data,post_data):
 		"""checks text input fields contains text letters only"""
 		for x in input_data:
+			if not isinstance(post_data[x],str):
+				return make_response(jsonify({"status": 409, "message": post_data[x] + " should contain letters only"}),
+									 409)
 			if not post_data[x].isalpha():
 				return make_response(jsonify({"status":409, "message": post_data[x]+" should contain letters only"}),409)
 		return True
