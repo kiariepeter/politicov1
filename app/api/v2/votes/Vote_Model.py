@@ -19,19 +19,22 @@ class Votes(object):
             size = len(row)
             if not size > 0:
                 return make_response(jsonify({'status': 409, 'message': 'invalid candidate '}), 409)
-
             cur.execute("SELECT * FROM tbl_offices where  id = %s" %office)
             row = cur.fetchall()
             size = len(row)
             if not size > 0:
                 return make_response(jsonify({'status': 404, 'message': 'invalid office'}), 404)
-
             cur.execute("SELECT * FROM tbl_users where  id = %s"% createdby)
             row = cur.fetchall()
             size = len(row)
             if not size > 0:
                 return make_response(jsonify({'status': 404, 'message': 'invalid voter'}), 404)
-
+            cur.execute("SELECT * FROM tbl_votes where  createdby = %s and office = %s ",(createdby,office,))
+            row2 = cur.fetchall()
+            size2 = len(row2)
+            # if not size2 > 0:
+                # return make_response(jsonify({'status': 409, 'message': 'You have voted for another candidate in this '
+                #                                                         'office '}), 409)
             cur.execute("SELECT * FROM tbl_votes where  createdby = %s and candidate = %s",
                         (createdby, candidate,))
             row = cur.fetchall()
@@ -64,7 +67,7 @@ class Votes(object):
                 for candidate in candidates:
                     cur.execute("SELECT candidate , COUNT(*) as votes from tbl_votes where candidate = %s group by candidate" % candidate["candidate"])
                     votes = cur.fetchall()
-                    main_votes.append({"candidate":candidate["firstname"], "votes": len(votes)})
+                    main_votes.append({"candidate":candidate["firstname"], "votes": len(votes)+1})
 
                 return make_response(jsonify({'status': 200, 'data': main_votes,"Votes for ": str(row[0]["name"])}), 200)
             return make_response(jsonify({'status': 404, 'message': 'No available candidates for '+str(row[0]["name"])+' office'}), 404)

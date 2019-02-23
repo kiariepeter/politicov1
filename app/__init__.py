@@ -8,7 +8,8 @@ from app.api.v2.office.view import office_blueprint
 from app.api.v2.party.view import party_blueprint
 from app.api.v2.candidates.view import candidate_blueprint
 from app.api.v2.votes.view import votes_blueprint
-
+from dotenv import  load_dotenv
+load_dotenv()
 
 def create_app():
     """create an instance of the flask app given the passed environment variable and return."""

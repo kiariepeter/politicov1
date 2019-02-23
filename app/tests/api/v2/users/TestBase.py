@@ -19,12 +19,39 @@ class TestUser(TestCase):
 
 		self.register = json.dumps({
 		"firstname":"PETER",
+		"lastname":"Kish",
+		"othername":"dsds",
+		"passportUrl":"http://www.politioc.com/photo.jpg",
+		"email":"peteteer@gmail.com",
+		"phoneNumber":"08487434",
+		"password":"123456A@h"
+		})
+		self.weak_password = json.dumps({
+		"firstname":"PETER",
 		"phoneNumber":"074354443",
 		"lastname":"Kish",
 		"othername":"dsds",
 		"passportUrl":"http://www.politioc.com/photo.jpg",
 		"email":"kqjwrwaqqqie2wawpeter4@gmail.com",
 		"password":"1234"
+		})
+		self.has_caps_letters = json.dumps({
+		"firstname":"PETER",
+		"phoneNumber":"074354443",
+		"lastname":"Kish",
+		"othername":"dsds",
+		"passportUrl":"http://www.politioc.com/photo.jpg",
+		"email":"k@gmail.com",
+		"password":"123456wer"
+		})
+		self.has_small_letters = json.dumps({
+		"firstname":"PETER",
+		"phoneNumber":"074354443",
+		"lastname":"Kish",
+		"othername":"dsds",
+		"passportUrl":"http://www.politioc.com/photo.jpg",
+		"email":"k@gmail.com",
+		"password":"123456AWE"
 		})
 
 		
@@ -43,8 +70,8 @@ class TestUser(TestCase):
 		"password":"1234"
 		})
 
-	def TearDown(self):
-		tear_users ="""DROP TABLE IF EXISTS tbl_users CASCADE"""
+	def tearDown(self):
+		tear_users ="""TRUNCATE tbl_users CASCADE"""
 		cur.execute(tear_users)
 
 

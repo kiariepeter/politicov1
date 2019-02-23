@@ -2,7 +2,9 @@ from flask import request, jsonify, Blueprint, make_response
 from app.api.v2.votes.Vote_Model import Votes
 from custom_validator import My_validator as validate
 from config import tokenizer
-
+import os
+import jwt
+MY_APIKEY = os.getenv('MY_APIKEY')
 votes = Votes()
 votes_blueprint = Blueprint('votes', __name__)
 
@@ -13,6 +15,8 @@ def castvote():
     """Given that i am a registerd voter i should be able to cast my vote
        When i visit ../api/v2/vote endpoint using POST method"""
     errors = []
+    token = request.headers['x-access-token']
+    data = jwt.decode(token, MY_APIKEY)
     try:
         if not request.get_json(): errors.append(
             make_response(jsonify({'status': 409, "message": "missing input data"}), 409))

@@ -17,7 +17,7 @@ def tokenizer(f):
 		try:
 			data = jwt.decode(token, MY_APIKEY)
 		except Exception as e:
-			return make_response(jsonify({'status':400, 'message':'expired token '}),400)
+			return make_response(jsonify({'status':401, 'message':'expired token '}),401)
 		return f(*args, **kwargs)
 	return my_wrapper
 

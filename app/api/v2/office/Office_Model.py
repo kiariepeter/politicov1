@@ -14,8 +14,8 @@ class Office(object):
     def add_office(office_name, office_type):
         """This method saves Office data and adds it to the offices table"""
         try:
-            cur.execute("INSERT INTO tbl_offices(name,type) VALUES(%s ,%s)",(office_name,office_type))
-            cur.execute("SELECT * FROM tbl_offices  order by id desc")
+            cur.execute("INSERT INTO tbl_offices(name,type) VALUES(%s ,%s) RETURNING *",(office_name,office_type))
+
             office_data = cur.fetchall()
             return make_response(jsonify({
             "status": 201,

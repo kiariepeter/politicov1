@@ -15,7 +15,8 @@ class Party(object):
         try:
             cur.execute("INSERT INTO tbl_parties(name,hqAddress,logoUrl,slogan) VALUES(%s ,%s ,%s, %s)",
                         (party_data[0], party_data[1], party_data[2], party_data[3]))
-            return make_response(jsonify({'status': 201, 'message': 'party added successfully'}), 201)
+
+            return make_response(jsonify({'status': 201,'data':party_data, 'message': 'party added successfully'}), 201)
         except psycopg2.DatabaseError as e:
             err = str(e.args[0])
             splited = err.split(": ")

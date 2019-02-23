@@ -7,7 +7,7 @@ import jwt
 import datetime
 import os
 
-MY_APIKEY = os.getenv('MY_APIKEY')
+MY_APIKEY = os.getenv("MY_APIKEY")
 conn = connect()
 # import pdb;pdb.set_trace()
 cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
@@ -22,14 +22,18 @@ class User(object):
         try:
             cur.execute(
                 "INSERT INTO tbl_users(firstname,lastname,othername,phoneNumber,"
-                "passportUrl,email,password) VALUES(%s ,%s ,%s, %s, %s, %s, %s)",
+                "passportUrl,email,password) VALUES(%s ,%s ,%s, %s, %s, %s, %s) RETURNING firstname,lastname,othername,phoneNumber,admin,"
+                "passportUrl,email,id",
                 (users[0], users[1], users[2], users[3], users[4], users[5], users[6]))
-            user_object = dict(firstname=users[0], lastname=users[1], othername=users[2], phone=users[3],
-                               passportUrl=users[4], email=users[5])
-            cur.execute("SELECT * FROM tbl_users  order by id desc limit 1")
-            users = cur.fetchall()
-            token = jwt.encode({'user':users[0], 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=5)},
+            # r_data = cur.fetchone()
+            user = cur.fetchall()
+
+            # return  jsonify(user)
+
+            token = jwt.encode({'user': user[0], 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=25)},
                                MY_APIKEY)
+            user_object = dict(firstname=users[0], lastname=users[1], othername=users[2], phone=users[3],
+                               passportUrl=users[4], email=users[5],id=user[0]['id'] ,token=token.decode('UTF-8'))
             return make_response(jsonify({'status': 201,'message': 'user added successfully', 'data': user_object}), 201)
         except psycopg2.DatabaseError as e:
             err = str(e.args[0])
@@ -56,7 +60,7 @@ class User(object):
         session["username"] = "admin"
         res = str(session.items())
         """This method validates user credentials"""
-        cur.execute("SELECT admin, firstname,lastname,othername,PhoneNumber,passportUrl FROM tbl_users where  email = %s and "
+        cur.execute("SELECT id,admin, firstname,lastname,othername,PhoneNumber,passportUrl FROM tbl_users where  email = %s and "
                     "password = %s", (email, password))
         row = cur.fetchall()
         size = len(row)
@@ -65,7 +69,7 @@ class User(object):
                                MY_APIKEY)
             return make_response(jsonify(
                 {'status': 200, "message": "logged in successfully", "data": row, 'token': token.decode('UTF-8')}), 200)
-        return make_response(jsonify({'status': 404, "message": "user not found "}),404)
+        return make_response(jsonify({'status': 401, "message": "invalid credentials "}),401)
 
     def update_user(self, user_id, user_data):
         """This method updates specific user details"""
