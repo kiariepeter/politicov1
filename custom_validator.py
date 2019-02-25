@@ -55,8 +55,10 @@ class My_validator(object):
 	@staticmethod
 	def is_text_only(word):
 		"""This method checks is word submitted contains letters only"""
+		if not isinstance(word,str):
+			return make_response(jsonify({"status":400, "message": word+" should contain letters only"}))
 		if not word.isalpha():
-			return make_response(jsonify({"status":409,"message": word+" should contain letters only "}), 409)
+			return make_response(jsonify({"status":400,"message": word+" should contain letters only "}), 400)
 		return True
 	@staticmethod
 	def text_arrayvalidator(input_data,post_data):
